@@ -2,8 +2,11 @@
 import wx
 
 
-class DialogWindow(wx.Dialog):
-    def __init__(self, size, name):
-        wx.Dialog.__init__(self, None, id=wx.ID_ANY, title=name, pos=wx.DefaultPosition, size=size,
-                           style=wx.DEFAULT_DIALOG_STYLE)
-        self.Center()
+class SettingPage(wx.Panel):
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent)
+        self.SetBackgroundColour('Red')
+        self.sizer = wx.BoxSizer(wx.HORIZONTAL)
+        main_sizer = wx.BoxSizer(wx.VERTICAL)
+        main_sizer.Fit(self)
+        self.sizer.Add(self, 1, wx.EXPAND | wx.ALL, 0)

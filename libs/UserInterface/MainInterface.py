@@ -42,5 +42,10 @@ class FramePanel(wx.Panel):
         return create
 
     def __on_create(self, event):
-        case = CreateCase.entrance()
-        print case
+        dlg = CreateCase.Entrance()
+        try:
+            if dlg.ShowModal() == wx.ID_OK:
+                test_case = dlg.get_test_case()
+                print test_case
+        except UserWarning:
+            pass
