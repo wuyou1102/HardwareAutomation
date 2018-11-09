@@ -5,7 +5,7 @@ from Base import SettingPage
 
 
 class DeviceSelection(SettingPage):
-    def __init__(self, device_type, parent):
+    def __init__(self, parent):
         SettingPage.__init__(self, parent=parent)
         main_sizer = wx.BoxSizer(wx.VERTICAL)
         sizer = wx.BoxSizer(wx.HORIZONTAL)
