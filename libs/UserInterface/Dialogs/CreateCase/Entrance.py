@@ -3,7 +3,8 @@ import wx
 import logging
 from _1_DevicesType import DeviceType
 from _2_DevicesSelection import DeviceSelection
-from _3_CaseSelection import CaseSelection
+from _3_CaseClassSelection import CaseClassSelection
+from _4_CaseNameSelection import CaseNameSelection
 
 logger = logging.getLogger(__name__)
 
@@ -11,7 +12,7 @@ logger = logging.getLogger(__name__)
 class Entrance(wx.Dialog):
     def __init__(self):
         wx.Dialog.__init__(self, parent=None, id=wx.ID_ANY, title=u"创建测试", pos=wx.DefaultPosition,
-                           size=(400, 500), style=wx.DEFAULT_DIALOG_STYLE)
+                           size=(400, 350), style=wx.DEFAULT_DIALOG_STYLE)
         self.sizer = wx.BoxSizer(wx.VERTICAL)
         self.test_case = dict()
         self.pages = list()
@@ -24,8 +25,9 @@ class Entrance(wx.Dialog):
         self.Layout()
         self.Centre(wx.BOTH)
         self.add_page(DeviceType(self))
-        self.add_page(CaseSelection(self))
         self.add_page(DeviceSelection(self))
+        self.add_page(CaseClassSelection(self))
+        self.add_page(CaseNameSelection(self))
 
     def __init_btn_sizer(self):
         sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -66,6 +68,7 @@ class Entrance(wx.Dialog):
             self.pages[self.page_index].Hide()
             self.page_index += 1
             self.pages[self.page_index].Show()
+            self.pages[self.page_index].Init()
             self.panel_sizer.Layout()
         else:
             print "End of pages!"
@@ -78,15 +81,21 @@ class Entrance(wx.Dialog):
 
     def update_test_case(self):
         try:
-            logger.info("BEFORE: %s " % self.test_case)
+            logger.debug("********************************************************")
+            logger.debug("* Update test case")
+            logger.debug("* Before : %s " % self.test_case)
             page = self.get_current_page()
             page.update()
-            logger.info("AFTER: %s " % self.test_case)
+            logger.debug("* After  : %s " % self.test_case)
             return True
         except NotImplementedError:
+            logger.error("* After  : NotImplementedError")
             return False
         except AttributeError:
+            logger.error("* After  : AttributeError")
             return False
+        finally:
+            logger.debug("********************************************************")
 
     def add_page(self, page):
         self.panel_sizer.Add(page, 1, wx.EXPAND | wx.ALL, 0)
@@ -94,6 +103,8 @@ class Entrance(wx.Dialog):
         if len(self.pages) > 1:
             page.Hide()
             self.Layout()
+        else:
+            page.Init()
 
     def _get_test_case(self):
         return self.test_case

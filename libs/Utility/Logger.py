@@ -31,7 +31,7 @@ logging.config.dictConfig({
         }
     },
     'loggers': {
-        'default': {
+        '': {
             'handlers': ['file', 'console'],
             'level': 'DEBUG',
         },

@@ -20,6 +20,9 @@ class SettingPage(wx.Panel):
     def update(self):
         raise NotImplementedError
 
+    def Init(self):
+        raise NotImplementedError
+
 
 class ListSettingPage(SettingPage):
     def __init__(self, parent, attr_name, style=wx.LB_SINGLE):
@@ -31,7 +34,7 @@ class ListSettingPage(SettingPage):
         refresh.Bind(wx.EVT_BUTTON, self.on_refresh)
         self.attr_name = attr_name
         self.wx_list = wx.ListBox(parent=self, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
-                                  choices=self._refresh(), style=style)
+                                  choices=[], style=style)
         self.wx_list.Bind(wx.EVT_LISTBOX_DCLICK, self.double_click_on_list)
         sizer.Add(refresh, 0, wx.ALIGN_CENTER | wx.ALL, 5)
         main_sizer.Add(self.wx_list, 1, wx.EXPAND | wx.ALL, 5)
@@ -39,9 +42,19 @@ class ListSettingPage(SettingPage):
         self.SetSizer(main_sizer)
 
     def on_refresh(self, event):
-        return self._refresh()
+        Utility.append_thread(self._refresh, allow_dupl=False)
+
+    def Init(self):
+        Utility.append_thread(self._refresh, allow_dupl=False)
 
     def _refresh(self):
+        self.wx_list.SetItems(['Refresh'])
+        self.wx_list.Disable()
+        items = self.get_choices()
+        self.wx_list.SetItems(items)
+        self.wx_list.Enable()
+
+    def get_choices(self):
         raise NotImplementedError
 
     def update(self):
@@ -54,3 +67,5 @@ class ListSettingPage(SettingPage):
 
     def double_click_on_list(self, event):
         self.next_page()
+
+
