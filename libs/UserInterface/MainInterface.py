@@ -2,7 +2,6 @@
 import sys
 import wx
 from libs.UserInterface.Dialogs import CreateCase
-from libs.UserInterface.Dialogs import CreateTestCase_BACKUP
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -10,7 +9,7 @@ sys.setdefaultencoding('utf-8')
 
 class Frame(wx.Frame):
     def __init__(self):
-        wx.Frame.__init__(self, None, id=wx.ID_ANY, title="硬件自动化测试", size=(400, 600))
+        wx.Frame.__init__(self, None, id=wx.ID_ANY, title=u"硬件自动化测试", size=(400, 600))
         self.Center()
         self.panel = FramePanel(self)
 

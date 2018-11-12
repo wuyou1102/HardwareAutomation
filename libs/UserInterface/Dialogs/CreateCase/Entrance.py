@@ -1,8 +1,11 @@
 # -*- encoding:UTF-8 -*-
 import wx
+import logging
 from _1_DevicesType import DeviceType
 from _2_DevicesSelection import DeviceSelection
 from _3_CaseSelection import CaseSelection
+
+logger = logging.getLogger(__name__)
 
 
 class Entrance(wx.Dialog):
@@ -10,7 +13,7 @@ class Entrance(wx.Dialog):
         wx.Dialog.__init__(self, parent=None, id=wx.ID_ANY, title=u"创建测试", pos=wx.DefaultPosition,
                            size=(400, 500), style=wx.DEFAULT_DIALOG_STYLE)
         self.sizer = wx.BoxSizer(wx.VERTICAL)
-        self.case = dict
+        self.test_case = dict()
         self.pages = list()
         self.page_index = 0
         self.panel_sizer = wx.BoxSizer(wx.VERTICAL)
@@ -39,6 +42,9 @@ class Entrance(wx.Dialog):
         return sizer
 
     def on_back(self, event):
+        self._back()
+
+    def _back(self):
         if self.page_index - 1 != -1:
             self.pages[self.page_index].Hide()
             self.page_index -= 1
@@ -48,6 +54,14 @@ class Entrance(wx.Dialog):
             print "You're already on the first page!"
 
     def on_next(self, event):
+        self._next()
+
+    def get_current_page(self):
+        return self.pages[self.page_index]
+
+    def _next(self):
+        if not self.update_test_case():
+            return
         if len(self.pages) - 1 != self.page_index:
             self.pages[self.page_index].Hide()
             self.page_index += 1
@@ -59,8 +73,20 @@ class Entrance(wx.Dialog):
     def on_cancel(self, event):
         self.Destroy()
 
-    def add_setting_page(self):
+    def add_config_page(self):
         pass
+
+    def update_test_case(self):
+        try:
+            logger.info("BEFORE: %s " % self.test_case)
+            page = self.get_current_page()
+            page.update()
+            logger.info("AFTER: %s " % self.test_case)
+            return True
+        except NotImplementedError:
+            return False
+        except AttributeError:
+            return False
 
     def add_page(self, page):
         self.panel_sizer.Add(page, 1, wx.EXPAND | wx.ALL, 0)
@@ -69,9 +95,8 @@ class Entrance(wx.Dialog):
             page.Hide()
             self.Layout()
 
-
-    def get_test_case(self):
-        return self.case
+    def _get_test_case(self):
+        return self.test_case
 
 
 if __name__ == '__main__':
