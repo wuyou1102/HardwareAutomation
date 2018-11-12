@@ -25,21 +25,23 @@ class SettingPage(wx.Panel):
 
 
 class ListSettingPage(SettingPage):
-    def __init__(self, parent, attr_name, style=wx.LB_SINGLE):
+    def __init__(self, parent, attr_name, style=wx.LB_SINGLE, need_refresh=True):
         SettingPage.__init__(self, parent=parent)
         main_sizer = wx.BoxSizer(wx.VERTICAL)
         sizer = wx.BoxSizer(wx.HORIZONTAL)
-        button_size = (70, 40)
-        refresh = wx.Button(self, wx.ID_ANY, u"刷新", wx.DefaultPosition, button_size, 0)
-        refresh.Bind(wx.EVT_BUTTON, self.on_refresh)
         self.attr_name = attr_name
         self.wx_list = wx.ListBox(parent=self, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
                                   choices=[], style=style)
         self.wx_list.Bind(wx.EVT_LISTBOX_DCLICK, self.double_click_on_list)
-        sizer.Add(refresh, 0, wx.ALIGN_CENTER | wx.ALL, 5)
+        if need_refresh:
+            button_size = (70, 40)
+            refresh = wx.Button(self, wx.ID_ANY, u"刷新", wx.DefaultPosition, button_size, 0)
+            refresh.Bind(wx.EVT_BUTTON, self.on_refresh)
+            sizer.Add(refresh, 0, wx.ALIGN_CENTER | wx.ALL, 5)
         main_sizer.Add(self.wx_list, 1, wx.EXPAND | wx.ALL, 5)
         main_sizer.Add(sizer, 0, wx.ALIGN_CENTER | wx.ALL, 0)
         self.SetSizer(main_sizer)
+
 
     def on_refresh(self, event):
         Utility.append_thread(self._refresh, allow_dupl=False)
@@ -67,5 +69,3 @@ class ListSettingPage(SettingPage):
 
     def double_click_on_list(self, event):
         self.next_page()
-
-

@@ -1,4 +1,7 @@
+# -*- encoding:UTF-8 -*-
+from cases import BaseCase
 
-class ON_OFF(object):
+
+class test_on_off(object):
     def __init__(self):
-        pass
+        BaseCase.AndroidCase(self)
