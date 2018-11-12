@@ -10,6 +10,7 @@ class DeviceType(SettingPage):
         self.test_case = parent.test_case
         sizer = wx.BoxSizer(wx.VERTICAL)
         self._type = wx.ListBox(self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, [String.Android, String.Serial], 0)
+        self._type.SetSelection(0)
         sizer.Add(self._type, 1, wx.EXPAND | wx.ALL, 5)
         self.SetSizer(sizer)
         self.Layout()
@@ -20,6 +21,7 @@ class DeviceType(SettingPage):
             self.test_case['device_type'] = self._type.GetStringSelection()
             return True
         return False
+
 
 if __name__ == "__main__":
     app = wx.App()

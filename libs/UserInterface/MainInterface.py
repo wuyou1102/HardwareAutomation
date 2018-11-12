@@ -1,7 +1,8 @@
 # -*- encoding:UTF-8 -*-
 import sys
 import wx
-from libs.UserInterface.Dialogs import CreateTestCase
+from libs.UserInterface.Dialogs import CreateCase
+from libs.UserInterface.Dialogs import CreateTestCase_BACKUP
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -42,7 +43,5 @@ class FramePanel(wx.Panel):
         return create
 
     def __on_create(self, event):
-        dlg = CreateTestCase.Entrance(self)
-        dlg.run()
-
-
+        dlg = CreateCase.Entrance()
+        dlg.ShowModal()

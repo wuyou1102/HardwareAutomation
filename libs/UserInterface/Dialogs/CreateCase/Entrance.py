@@ -11,24 +11,18 @@ class Entrance(wx.Dialog):
                            size=(400, 500), style=wx.DEFAULT_DIALOG_STYLE)
         self.sizer = wx.BoxSizer(wx.VERTICAL)
         self.case = dict
-        self.pages = [DeviceType]
-        self.setting_panel = wx.Panel(self)
-        setting_sizer = wx.BoxSizer(wx.VERTICAL)
-        self.setting_panel.SetSizer(setting_sizer)
-        self.setting_panel.SetBackgroundColour('black')
-        self.sizer.Add(self.setting_panel, 1, wx.EXPAND | wx.ALL, 0)
+        self.pages = list()
+        self.page_index = 0
+        self.panel_sizer = wx.BoxSizer(wx.VERTICAL)
+        self.sizer.Add(self.panel_sizer, 1, wx.EXPAND | wx.ALL, 0)
         self.sizer.Add(wx.StaticLine(self, style=wx.LI_HORIZONTAL), 0, wx.EXPAND | wx.ALL, 5)
         self.sizer.Add(self.__init_btn_sizer(), 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALL, 0)
-        self.sizer.Fit(self.setting_panel)
         self.SetSizer(self.sizer)
         self.Layout()
         self.Centre(wx.BOTH)
-        self.hello_world()
-        self.hello_world1()
-        self.hello_world1()
-        self.hello_world1()
-        self.hello_world1()
-        self.hello_world1()
+        self.add_page(DeviceType(self))
+        self.add_page(CaseSelection(self))
+        self.add_page(DeviceSelection(self))
 
     def __init_btn_sizer(self):
         sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -45,39 +39,36 @@ class Entrance(wx.Dialog):
         return sizer
 
     def on_back(self, event):
-        pass
+        if self.page_index - 1 != -1:
+            self.pages[self.page_index].Hide()
+            self.page_index -= 1
+            self.pages[self.page_index].Show()
+            self.panel_sizer.Layout()
+        else:
+            print "You're already on the first page!"
 
     def on_next(self, event):
-        pass
+        if len(self.pages) - 1 != self.page_index:
+            self.pages[self.page_index].Hide()
+            self.page_index += 1
+            self.pages[self.page_index].Show()
+            self.panel_sizer.Layout()
+        else:
+            print "End of pages!"
 
     def on_cancel(self, event):
-        pass
+        self.Destroy()
 
     def add_setting_page(self):
         pass
 
-    def hello_world(self):
+    def add_page(self, page):
+        self.panel_sizer.Add(page, 1, wx.EXPAND | wx.ALL, 0)
+        self.pages.append(page)
+        if len(self.pages) > 1:
+            page.Hide()
+            self.Layout()
 
-        sizer = self.setting_panel.GetSizer()
-
-        d = DeviceType(self)
-        sizer.Add(d, 1, wx.EXPAND | wx.ALL, 0)
-        self.setting_panel.SetSizer(sizer)
-        self.setting_panel.Layout()
-        sizer.Fit(self.setting_panel)
-        self.Layout()
-
-    def hello_world1(self):
-        # self.setting_panel.GetSizer().Destroy()
-        sizer = self.setting_panel.GetSizer()
-
-
-        d = DeviceSelection(self)
-        sizer.Add(d, 1, wx.EXPAND | wx.ALL, 0)
-        self.setting_panel.SetSizer(sizer)
-        self.setting_panel.Layout()
-        sizer.Fit(self.setting_panel)
-        self.Layout()
 
     def get_test_case(self):
         return self.case
