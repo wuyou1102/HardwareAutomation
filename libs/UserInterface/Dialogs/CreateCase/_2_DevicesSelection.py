@@ -1,6 +1,7 @@
 # -*- encoding:UTF-8 -*-
 import Base
 import wx
+from libs import Utility
 from libs.Config import String
 
 
@@ -11,11 +12,11 @@ class DeviceSelection(Base.ListSettingPage):
     def get_choices(self):
         _type = self._get_value("device_type")
         if _type == String.Android:
-            return list('abcdefghijkl')
+            return Utility.get_adb_devices()
         elif _type == String.Serial:
             return list('321')
         else:
-            return ["Unkown"]
+            return ["Unknow"]
 
 
 if __name__ == '__main__':
