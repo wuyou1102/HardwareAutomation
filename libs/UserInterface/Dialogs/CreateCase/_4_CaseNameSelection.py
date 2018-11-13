@@ -2,6 +2,7 @@
 
 import Base
 import cases
+from libs import Utility
 
 
 class CaseNameSelection(Base.ListSettingPage):
@@ -20,22 +21,20 @@ class CaseNameSelection(Base.ListSettingPage):
             case = getattr(_group_attr, case_name)
             try:
                 if case.name:
-                    self._case[case.name] = case_name
+                    self._case[case.name] = case
                 else:
-                    self._case[case_name] = case_name
+                    self._case[case_name] = case
             except AttributeError:
                 self._case[case_name] = case_name
-
         return self._case.keys()
 
-
-def update(self):
-    return False
-
-
-def _refresh(self):
-    self.wx_list.SetItems(['Refresh'])
-    self.wx_list.Disable()
-    items = self.get_choices()
-    self.wx_list.SetItems(items)
-    self.wx_list.Enable()
+    def update(self):
+        attr_value = self.wx_list.GetStringSelection()
+        if attr_value:
+            case = self._case[attr_value]
+            self._set_value('case_name', attr_value)
+            self._set_value('case_class', case)
+            self.parent.add_config_page(case.get_config())
+        else:
+            Utility.Alert.Error(u"请选择选项")
+            raise AttributeError

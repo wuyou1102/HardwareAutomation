@@ -58,9 +58,6 @@ class Entrance(wx.Dialog):
     def on_next(self, event):
         self._next()
 
-    def get_current_page(self):
-        return self.pages[self.page_index]
-
     def _next(self):
         if not self.update_test_case():
             return
@@ -76,8 +73,14 @@ class Entrance(wx.Dialog):
     def on_cancel(self, event):
         self.Destroy()
 
+    def get_current_page(self):
+        return self.pages[self.page_index]
+
     def add_config_page(self):
-        pass
+        page_length = len(self.pages)
+        print len(self.pages)
+        if len(self.pages) > 4:
+            pass
 
     def update_test_case(self):
         try:
