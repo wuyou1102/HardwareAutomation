@@ -1,5 +1,6 @@
 import inspect
 import logging
+from libs.Utility.TestPrint import TestPrint
 
 logger = logging.getLogger(__name__)
 
@@ -8,14 +9,23 @@ class Case(object):
     name = None
 
     def __init__(self, device, loop):
-        pass
+        self.Print = TestPrint()
 
     def setUp(self):
-        logging.debug()
+        self.Print.debug('sss')
+
+    def tearDown(self):
+        self.Print.info('sss')
 
     @classmethod
-    def get_config(cls):
-        print inspect.getargspec(cls.__init__).args
+    def get_configs(cls):
+        args = inspect.getargspec(cls.__init__).args
+        ignore_list = ['self', 'device']
+        configs = list()
+        for arg in args:
+            if arg not in ignore_list:
+                configs.append(arg)
+        return configs
 
     def _check(self):
         print self.__class__
@@ -32,4 +42,4 @@ class SerialCase(Case):
 
 
 if __name__ == '__main__':
-    AndroidCase.get_config()
+    print AndroidCase.get_configs()

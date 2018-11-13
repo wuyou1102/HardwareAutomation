@@ -3,7 +3,7 @@ import logging.config
 import os
 import sys
 
-__LOG = os.path.join(os.path.abspath(os.path.dirname(sys.argv[0])), "log")
+__LOG = os.path.join(os.path.abspath(os.path.dirname(sys.argv[0])), "log", "console")
 if not os.path.exists(__LOG):
     os.makedirs(__LOG)
 

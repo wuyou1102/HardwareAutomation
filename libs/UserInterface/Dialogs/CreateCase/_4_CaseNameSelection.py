@@ -34,7 +34,7 @@ class CaseNameSelection(Base.ListSettingPage):
             case = self._case[attr_value]
             self._set_value('case_name', attr_value)
             self._set_value('case_class', case)
-            self.parent.add_config_page(case.get_config())
+            self.parent.add_config_page(case.get_configs())
         else:
             Utility.Alert.Error(u"请选择选项")
             raise AttributeError
