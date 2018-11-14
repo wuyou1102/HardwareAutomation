@@ -23,13 +23,17 @@ class ExecuteResult(object):
 def execute_command(command):
     outputs = list()
     p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE, shell=True)
+    __logger.info('********************************************************')
+    __logger.info('* Executed command:\"%s\"' % command)
     try:
         for line in iter(p.stdout.readline, b''):
-            __logger.info(line)
+            line = line.strip('\r\ns')
+            __logger.info("* STDOUT: {line}".format(line=line))
             outputs.append(line)
     finally:
         exit_code = p.wait()
-        __logger.info('Executed command:\"%s\" and exit code is : \"%s\"' % (command, exit_code))
+        __logger.info('* EXIT CODE: \"%s\"' % exit_code)
+        __logger.info('********************************************************')
         return ExecuteResult(exit_code=exit_code, outputs=outputs)
 
 

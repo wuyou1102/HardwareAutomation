@@ -28,20 +28,16 @@ class ListSettingPage(SettingPage):
     def __init__(self, parent, attr_name, style=wx.LB_SINGLE, need_refresh=True):
         SettingPage.__init__(self, parent=parent)
         main_sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer = wx.BoxSizer(wx.HORIZONTAL)
         self.attr_name = attr_name
         self.wx_list = wx.ListBox(parent=self, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
                                   choices=[], style=style)
         self.wx_list.Bind(wx.EVT_LISTBOX_DCLICK, self.double_click_on_list)
+        main_sizer.Add(self.wx_list, 1, wx.EXPAND | wx.ALL, 3)
         if need_refresh:
-            button_size = (70, 40)
-            refresh = wx.Button(self, wx.ID_ANY, u"刷新", wx.DefaultPosition, button_size, 0)
+            refresh = wx.Button(self, wx.ID_ANY, u"刷新", wx.DefaultPosition, (-1, 30), 0)
             refresh.Bind(wx.EVT_BUTTON, self.on_refresh)
-            sizer.Add(refresh, 0, wx.ALIGN_CENTER | wx.ALL, 5)
-        main_sizer.Add(self.wx_list, 1, wx.EXPAND | wx.ALL, 5)
-        main_sizer.Add(sizer, 0, wx.ALIGN_CENTER | wx.ALL, 0)
+            main_sizer.Add(refresh, 0, wx.EXPAND | wx.LEFT | wx.RIGHT, 3)
         self.SetSizer(main_sizer)
-
 
     def on_refresh(self, event):
         Utility.append_thread(self._refresh, allow_dupl=False)
