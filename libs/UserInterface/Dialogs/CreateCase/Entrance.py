@@ -12,15 +12,15 @@ logger = logging.getLogger(__name__)
 class Entrance(wx.Dialog):
     def __init__(self):
         wx.Dialog.__init__(self, parent=None, id=wx.ID_ANY, title=u"创建测试", pos=wx.DefaultPosition,
-                           size=(400, 350), style=wx.DEFAULT_DIALOG_STYLE)
+                           size=(300, 250), style=wx.DEFAULT_DIALOG_STYLE)
         self.sizer = wx.BoxSizer(wx.VERTICAL)
         self.test_case = dict()
         self.pages = list()
         self.page_index = 0
         self.panel_sizer = wx.BoxSizer(wx.VERTICAL)
         self.sizer.Add(self.panel_sizer, 1, wx.EXPAND | wx.ALL, 0)
-        self.sizer.Add(wx.StaticLine(self, style=wx.LI_HORIZONTAL), 0, wx.EXPAND | wx.ALL, 5)
-        self.sizer.Add(self.__init_btn_sizer(), 0, wx.ALIGN_CENTER_HORIZONTAL | wx.ALL, 0)
+        self.sizer.Add(wx.StaticLine(self, style=wx.LI_HORIZONTAL), 0, wx.EXPAND | wx.LEFT | wx.RIGHT, 3)
+        self.sizer.Add(self.__init_btn_sizer(), 0, wx.EXPAND | wx.ALL, 3)
         self.SetSizer(self.sizer)
         self.Layout()
         self.Centre(wx.BOTH)
@@ -31,16 +31,15 @@ class Entrance(wx.Dialog):
 
     def __init_btn_sizer(self):
         sizer = wx.BoxSizer(wx.HORIZONTAL)
-        btn_size = (110, -1)
-        btn_back = wx.Button(self, wx.ID_ANY, u"< Back", wx.DefaultPosition, btn_size, 0)
-        btn_next = wx.Button(self, wx.ID_ANY, u"Next >", wx.DefaultPosition, btn_size, 0)
-        btn_cancel = wx.Button(self, wx.ID_ANY, u"Cancel", wx.DefaultPosition, btn_size, 0)
+        btn_back = wx.Button(self, wx.ID_ANY, u"< Back", wx.DefaultPosition, wx.DefaultSize, 0)
+        btn_next = wx.Button(self, wx.ID_ANY, u"Next >", wx.DefaultPosition, wx.DefaultSize, 0)
+        btn_cancel = wx.Button(self, wx.ID_ANY, u"Cancel", wx.DefaultPosition, wx.DefaultSize, 0)
         btn_back.Bind(wx.EVT_BUTTON, self.on_back)
         btn_next.Bind(wx.EVT_BUTTON, self.on_next)
         btn_cancel.Bind(wx.EVT_BUTTON, self.on_cancel)
-        sizer.Add(btn_back, 1, wx.ALL, 5)
-        sizer.Add(btn_next, 1, wx.ALL, 5)
-        sizer.Add(btn_cancel, 1, wx.ALL, 5)
+        sizer.Add(btn_back, 1, wx.EXPAND | wx.ALL, 0)
+        sizer.Add(btn_next, 1, wx.EXPAND | wx.ALL, 0)
+        sizer.Add(btn_cancel, 1, wx.EXPAND | wx.ALL, 0)
         return sizer
 
     def on_back(self, event):
@@ -76,7 +75,7 @@ class Entrance(wx.Dialog):
     def get_current_page(self):
         return self.pages[self.page_index]
 
-    def add_config_page(self):
+    def add_config_page(self, configs_types):
         page_length = len(self.pages)
         print len(self.pages)
         if len(self.pages) > 4:

@@ -24,7 +24,7 @@ def execute_command(command):
     outputs = list()
     p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE, shell=True)
     __logger.info('********************************************************')
-    __logger.info('* Executed command:\"%s\"' % command)
+    __logger.info('* EXECUTED COMMAND:\"%s\"' % command)
     try:
         for line in iter(p.stdout.readline, b''):
             line = line.strip('\r\ns')
