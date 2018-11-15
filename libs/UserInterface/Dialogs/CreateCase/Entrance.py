@@ -5,6 +5,7 @@ from _1_DevicesType import DeviceType
 from _2_DevicesSelection import DeviceSelection
 from _3_CaseClassSelection import CaseClassSelection
 from _4_CaseNameSelection import CaseNameSelection
+import ConfigPanels
 
 logger = logging.getLogger(__name__)
 
@@ -76,10 +77,15 @@ class Entrance(wx.Dialog):
         return self.pages[self.page_index]
 
     def add_config_page(self, configs_types):
-        page_length = len(self.pages)
-        print len(self.pages)
+        self.remove_config_pages()
+        for c in configs_types:
+            config_panel = ConfigPanels.switch(c)
+            self.add_page(config_panel(self))
+
+    def remove_config_pages(self):
         if len(self.pages) > 4:
-            pass
+            return self.pages[:4]
+        return self.pages
 
     def update_test_case(self):
         try:

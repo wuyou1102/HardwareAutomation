@@ -9,7 +9,7 @@ import cases
 
 class CaseClassSelection(Base.ListSettingPage):
     def __init__(self, parent):
-        Base.ListSettingPage.__init__(self, parent=parent, attr_name="case_group", need_refresh=False)
+        Base.ListSettingPage.__init__(self, parent=parent, attr_name="case_group", need_refresh=False, title=u"请选择测试分类")
 
     def get_choices(self):
         _type = self._get_value("device_type")

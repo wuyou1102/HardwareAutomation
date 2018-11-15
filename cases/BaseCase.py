@@ -17,6 +17,9 @@ class Case(object):
     def tearDown(self):
         self.Print.info('sss')
 
+    def prcess(self):
+        self
+
     @classmethod
     def get_configs(cls):
         args = inspect.getargspec(cls.__init__).args
@@ -29,6 +32,9 @@ class Case(object):
 
     def _check(self):
         print self.__class__
+
+    def run(self):
+        NotImplementedError
 
 
 class AndroidCase(Case):

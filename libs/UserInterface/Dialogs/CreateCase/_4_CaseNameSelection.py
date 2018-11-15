@@ -7,7 +7,7 @@ from libs import Utility
 
 class CaseNameSelection(Base.ListSettingPage):
     def __init__(self, parent):
-        Base.ListSettingPage.__init__(self, parent=parent, attr_name="case_name", need_refresh=False)
+        Base.ListSettingPage.__init__(self, parent=parent, attr_name="case_name", need_refresh=False, title=u"请选择测试用例")
         self._case = dict()
 
     def get_choices(self):
