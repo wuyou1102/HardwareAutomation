@@ -2,7 +2,9 @@
 import sys
 import wx
 from libs.UserInterface.Dialogs import CreateCase
+import logging
 
+logger = logging.getLogger(__name__)
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -44,3 +46,6 @@ class FramePanel(wx.Panel):
     def __on_create(self, event):
         dlg = CreateCase.Entrance()
         dlg.ShowModal()
+        test_case = dlg.get_test_case()
+        if test_case is not None:
+            logger.info('CreateTestCase:%s' % test_case)

@@ -29,6 +29,7 @@ class Entrance(wx.Dialog):
         self.add_page(DeviceSelection(self))
         self.add_page(CaseClassSelection(self))
         self.add_page(CaseNameSelection(self))
+        self.Bind(wx.EVT_CLOSE, self.on_cancel)
 
     def __init_btn_sizer(self):
         sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -52,8 +53,6 @@ class Entrance(wx.Dialog):
             self.page_index -= 1
             self.pages[self.page_index].Show()
             self.panel_sizer.Layout()
-        else:
-            print "You're already on the first page!"
 
     def on_next(self, event):
         self._next()
@@ -68,9 +67,10 @@ class Entrance(wx.Dialog):
             self.pages[self.page_index].Init()
             self.panel_sizer.Layout()
         else:
-            print "End of pages!"
+            self.Destroy()
 
     def on_cancel(self, event):
+        self.test_case = None
         self.Destroy()
 
     def get_current_page(self):
@@ -114,7 +114,7 @@ class Entrance(wx.Dialog):
         else:
             page.Init()
 
-    def _get_test_case(self):
+    def get_test_case(self):
         return self.test_case
 
 
