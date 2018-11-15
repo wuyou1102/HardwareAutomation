@@ -3,17 +3,19 @@
 import Base
 import cases
 from libs import Utility
+from libs.Config import String
 
 
 class CaseNameSelection(Base.ListSettingPage):
     def __init__(self, parent):
-        Base.ListSettingPage.__init__(self, parent=parent, attr_name="case_name", need_refresh=False, title=u"请选择测试用例")
+        Base.ListSettingPage.__init__(self, parent=parent, attr_name=String.CaseName, need_refresh=False,
+                                      title=u"请选择测试用例")
         self._case = dict()
 
     def get_choices(self):
         self._case = dict()
-        _type = self._get_value("device_type")
-        _group_name = self._get_value("case_group")
+        _type = self._get_value(String.DeviceType)
+        _group_name = self._get_value(String.CaseGroup)
         _case_groups = getattr(cases, _type)
         _group_attr = getattr(_case_groups, _group_name)
         __test_case_names = [x for x in dir(_group_attr) if x.startswith('test_')]
@@ -32,8 +34,8 @@ class CaseNameSelection(Base.ListSettingPage):
         attr_value = self.wx_list.GetStringSelection()
         if attr_value:
             case = self._case[attr_value]
-            self._set_value('case_name', attr_value)
-            self._set_value('case_class', case)
+            self._set_value(String.CaseName, attr_value)
+            self._set_value(String.Case, case)
             self.parent.add_config_page(case.get_configs())
         else:
             Utility.Alert.Error(u"请选择选项")

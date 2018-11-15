@@ -2,17 +2,16 @@
 
 import Base
 import wx
-from libs import Utility
-
+from libs.Config import String
 import cases
 
 
 class CaseClassSelection(Base.ListSettingPage):
     def __init__(self, parent):
-        Base.ListSettingPage.__init__(self, parent=parent, attr_name="case_group", need_refresh=False, title=u"请选择测试分类")
+        Base.ListSettingPage.__init__(self, parent=parent, attr_name=String.CaseGroup, need_refresh=False, title=u"请选择测试分类")
 
     def get_choices(self):
-        _type = self._get_value("device_type")
+        _type = self._get_value(String.DeviceType)
         dir_class = dir(getattr(cases, _type))
         return [x for x in dir_class if not x.startswith('__') or not x.endswith('__')]
 

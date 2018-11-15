@@ -6,7 +6,7 @@ import Base
 
 class DeviceType(Base.ListSettingPage):
     def __init__(self, parent):
-        Base.ListSettingPage.__init__(self, parent=parent, attr_name="device_type", need_refresh=False,
+        Base.ListSettingPage.__init__(self, parent=parent, attr_name=String.DeviceType, need_refresh=False,
                                       title=u"请选择设备类型")
 
     def get_choices(self):
