@@ -7,6 +7,3 @@ class test_LogicalDisplays(BaseCase.AndroidCase):
 
     def __init__(self, device, loop):
         BaseCase.AndroidCase.__init__(self, device=device, loop=loop)
-
-
-

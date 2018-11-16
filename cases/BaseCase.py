@@ -30,6 +30,15 @@ class Case(object):
                 configs.append(arg)
         return configs
 
+    @classmethod
+    def convert_dict_to_tuple(cls, **kwargs):
+        args_name = inspect.getargspec(cls.__init__).args
+        args_value = list()
+        for arg_name in args_name:
+            if arg_name != "self":
+                args_value.append(kwargs.get(arg_name))
+        return tuple(args_value)
+
     def _check(self):
         print self.__class__
 
