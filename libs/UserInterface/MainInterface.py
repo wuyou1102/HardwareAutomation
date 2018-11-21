@@ -54,6 +54,5 @@ class FramePanel(wx.Panel):
         dlg.ShowModal()
         test_case = dlg.get_test_case()
         if test_case is not None:
-            logger.info('I got a new test case: ' % test_case)
-            for x in range(10):
-                self.scrolled_window.add_test_division(test_case=test_case)
+            logger.info('I got a new test case: %s' % test_case)
+            self.scrolled_window.add_test_division(test_case=test_case)

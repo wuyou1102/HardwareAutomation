@@ -18,9 +18,7 @@ class ScrolledWindow(wx.ScrolledWindow):
         case = Case(parent=self, _id=_id, **test_case)
         self._test_pool[_id] = case
         self._add(case.get_division())
-        time.sleep(0.01)
         self._refresh()
-        print self._test_pool
 
     def remove_test_division(self, _id):
         if _id in self._test_pool.keys():
