@@ -10,12 +10,11 @@ class Case(object):
 
     def __init__(self, loop):
         self.Print = TestPrint()
-        self.init_variable()
-
-    def init_variable(self):
-        self.Pass = 0
-        self.Fail = 0
-        self.Total = 0
+        self._pass = 0
+        self._fail = 0
+        self._total = 0
+        self._stop_flag = False
+        self._pause_flag = False
 
     def tearDown(self):
         self.Print.info('sss')
@@ -42,11 +41,14 @@ class Case(object):
                 args_value.append(kwargs.get(arg_name))
         return tuple(args_value)
 
-    def _check(self):
-        print self.__class__
-
     def run(self):
         NotImplementedError
+
+    def stop(self):
+        self.stop_flag = True
+
+    def pause(self):
+        self.pause_flag = not self.pause_flag
 
 
 class AndroidCase(Case):

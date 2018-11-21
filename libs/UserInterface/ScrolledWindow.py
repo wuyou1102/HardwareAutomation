@@ -1,22 +1,38 @@
 import wx
 from CaseDivision import Case
+import time
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class ScrolledWindow(wx.ScrolledWindow):
     def __init__(self, parent, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize, style=wx.VSCROLL):
         wx.ScrolledWindow.__init__(self, parent=parent, id=id, pos=pos, size=size, style=style)
-        self.test_container = parent.test_container
+        self._container = wx.BoxSizer(wx.VERTICAL)
         self.scrolled_sizer = parent.scrolled_sizer
+        self._test_pool = dict()
 
     def add_test_division(self, test_case):
-        case = Case(parent=self, **test_case)
-        self.test_container.Add(case.get_division(), 0, wx.EXPAND | wx.ALL, 1)
-        self.refresh_scrolled_window()
+        _id = time.time()
+        case = Case(parent=self, _id=_id, **test_case)
+        self._test_pool[_id] = case
+        self._add(case.get_division())
+        time.sleep(0.01)
+        self._refresh()
+        print self._test_pool
 
-    def remove_test_division(self, division):
-        self.test_container.Remove(division)
-        self.refresh_scrolled_window()
+    def remove_test_division(self, _id):
+        if _id in self._test_pool.keys():
+            case = self._test_pool.pop(_id)
+            self._container.Remove(case.get_division())
+            self._refresh()
+        else:
+            logger.error("Can not find division id:%s" % _id)
 
-    def refresh_scrolled_window(self):
-        self.SetSizer(self.test_container)
+    def _refresh(self):
+        self.SetSizer(self._container, deleteOld=True)
         self.scrolled_sizer.Layout()
+
+    def _add(self, division):
+        self._container.Add(division, 0, wx.EXPAND | wx.ALL, 1)

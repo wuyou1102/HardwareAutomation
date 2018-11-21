@@ -4,13 +4,17 @@ from libs.Config import String
 
 
 class Case(object):
-    def __init__(self, parent, **kwargs):
+    def __init__(self, parent, _id, **kwargs):
         self._parent = parent
+        self._id = _id
         self.panel = wx.Panel(parent, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL)
         self.panel.SetBackgroundColour("#CAFCFA")
         self._init_variable(**kwargs)
         self._init_test(**kwargs)
         self._init_division()
+
+    def Hide(self):
+        self.panel.Hide()
 
     def _init_variable(self, **kwargs):
         self._device = kwargs.get(String.Device)
@@ -40,7 +44,7 @@ class Case(object):
         sizer = wx.BoxSizer(wx.HORIZONTAL)
         Pass = wx.StaticText(self.panel, wx.ID_ANY, "Pass:", wx.DefaultPosition, wx.DefaultSize, 0)
         Fail = wx.StaticText(self.panel, wx.ID_ANY, "Fail:", wx.DefaultPosition, wx.DefaultSize, 0)
-        self.Pass = wx.StaticText(self.panel, wx.ID_ANY, "0", wx.DefaultPosition, wx.DefaultSize, 0)
+        self.Pass = wx.StaticText(self.panel, wx.ID_ANY, str(self._id), wx.DefaultPosition, wx.DefaultSize, 0)
         self.Fail = wx.StaticText(self.panel, wx.ID_ANY, "0", wx.DefaultPosition, wx.DefaultSize, 0)
         sizer.Add(Pass, 0, wx.ALL, 3)
         sizer.Add(self.Pass, 0, wx.ALL, 3)
@@ -87,5 +91,13 @@ class Case(object):
     def get_division(self):
         return self._division
 
+    @property
+    def id(self):
+        return self._id
+
     def on_destroy(self, event):
-        self._parent.remove_test_division(self._division)
+        self.panel.Destroy()
+        self._parent.remove_test_division(self._id)
+
+    def stop(self, event):
+        self._case.stop()
