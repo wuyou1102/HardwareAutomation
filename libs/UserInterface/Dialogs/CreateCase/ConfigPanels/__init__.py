@@ -1,7 +1,11 @@
+from libs.Config import String
 from LoopPanel import LoopPanel
+from DevicePanel import DeviceSelection
 
 __panels = {
-    'loop': LoopPanel
+    u'loop': LoopPanel,
+    u'device': DeviceSelection,
+
 }
 
 

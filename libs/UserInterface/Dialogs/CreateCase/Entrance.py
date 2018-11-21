@@ -1,10 +1,9 @@
 # -*- encoding:UTF-8 -*-
 import wx
 import logging
-from _1_DevicesType import DeviceType
-from _2_DevicesSelection import DeviceSelection
-from _3_CaseClassSelection import CaseClassSelection
-from _4_CaseNameSelection import CaseNameSelection
+from _1_CaseType import CaseType
+from _2_CaseGroupSelection import CaseGroupSelection
+from _3_CaseSelection import CaseSelection
 import ConfigPanels
 
 logger = logging.getLogger(__name__)
@@ -25,10 +24,9 @@ class Entrance(wx.Dialog):
         self.SetSizer(self.sizer)
         self.Layout()
         self.Centre(wx.BOTH)
-        self.add_page(DeviceType(self))
-        self.add_page(DeviceSelection(self))
-        self.add_page(CaseClassSelection(self))
-        self.add_page(CaseNameSelection(self))
+        self.add_page(CaseType(self))
+        self.add_page(CaseGroupSelection(self))
+        self.add_page(CaseSelection(self))
         self.Bind(wx.EVT_CLOSE, self.on_cancel)
 
     def __init_btn_sizer(self):
@@ -83,8 +81,8 @@ class Entrance(wx.Dialog):
             self.add_page(config_panel(self))
 
     def remove_config_pages(self):
-        if len(self.pages) > 4:
-            return self.pages[:4]
+        if len(self.pages) > 3:
+            return self.pages[:3]
         return self.pages
 
     def update_test_case(self):

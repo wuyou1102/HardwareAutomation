@@ -6,7 +6,7 @@ from libs import Utility
 from libs.Config import String
 
 
-class CaseNameSelection(Base.ListSettingPage):
+class CaseSelection(Base.ListSettingPage):
     def __init__(self, parent):
         Base.ListSettingPage.__init__(self, parent=parent, attr_name=String.CaseName, need_refresh=False,
                                       title=u"请选择测试用例")
@@ -14,7 +14,7 @@ class CaseNameSelection(Base.ListSettingPage):
 
     def get_choices(self):
         self._case = dict()
-        _type = self._get_value(String.DeviceType)
+        _type = self._get_value(String.CaseType)
         _group_name = self._get_value(String.CaseGroup)
         _case_groups = getattr(cases, _type)
         _group_attr = getattr(_case_groups, _group_name)

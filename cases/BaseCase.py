@@ -8,22 +8,25 @@ logger = logging.getLogger(__name__)
 class Case(object):
     name = None
 
-    def __init__(self, device, loop):
+    def __init__(self, loop):
         self.Print = TestPrint()
+        self.init_variable()
 
-    def setUp(self):
-        self.Print.debug('sss')
+    def init_variable(self):
+        self.Pass = 0
+        self.Fail = 0
+        self.Total = 0
 
     def tearDown(self):
         self.Print.info('sss')
 
-    def prcess(self):
-        self
+    def setUp(self):
+        self.Print.info('dddd')
 
     @classmethod
     def get_configs(cls):
         args = inspect.getargspec(cls.__init__).args
-        ignore_list = ['self', 'device']
+        ignore_list = ['self']
         configs = list()
         for arg in args:
             if arg not in ignore_list:
@@ -47,13 +50,13 @@ class Case(object):
 
 
 class AndroidCase(Case):
-    def __init__(self, device, loop):
-        Case.__init__(self, device=device, loop=loop)
+    def __init__(self, loop):
+        Case.__init__(self, loop=loop)
 
 
 class SerialCase(Case):
-    def __init__(self, device, loop):
-        Case.__init__(self, device=device, loop=loop)
+    def __init__(self, loop):
+        Case.__init__(self, loop=loop)
 
 
 if __name__ == '__main__':

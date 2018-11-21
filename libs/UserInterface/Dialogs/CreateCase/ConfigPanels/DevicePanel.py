@@ -1,5 +1,5 @@
 # -*- encoding:UTF-8 -*-
-import Base
+from libs.UserInterface.Dialogs.CreateCase import Base
 import wx
 from libs import Utility
 from libs.Config import String
@@ -10,7 +10,7 @@ class DeviceSelection(Base.ListSettingPage):
         Base.ListSettingPage.__init__(self, parent=parent, attr_name=String.Device, title=u"请选择设备")
 
     def get_choices(self):
-        _type = self._get_value(String.DeviceType)
+        _type = self._get_value(String.CaseType)
         if _type == String.Android:
             return Utility.get_adb_devices()
         elif _type == String.Serial:

@@ -71,8 +71,9 @@ class ListSettingPage(SettingPage):
 
 
 class IntSettingPage(SettingPage):
-    def __init__(self, parent, attr_name, style=wx.SP_ARROW_KEYS, min=1, max=100000, initial=1, title=""):
+    def __init__(self, parent, attr_name, min, max, style=wx.SP_ARROW_KEYS, initial=None, title=""):
         SettingPage.__init__(self, parent=parent)
+        initial = initial if initial is not None else min
         main_sizer = wx.BoxSizer(wx.VERTICAL)
         if title:
             title = u'{title}  ({min}～{max})'.format(title=title, min=min, max=max)
