@@ -9,7 +9,7 @@ class Case(object):
     def __init__(self, parent, _id, **kwargs):
         self._parent = parent
         self._id = _id
-        self._short_id = _id[-6:]
+        self._short_id = _id[-6:].upper()
         self._panel = wx.Panel(parent, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL)
         self._panel.SetBackgroundColour("#33DDFF")
         self._init_variable(**kwargs)
@@ -99,8 +99,7 @@ class Case(object):
 
     @property
     def division_name(self):
-        return u'{id} {case_type} {case_name}'.format(id=self._short_id, case_type=self._case_type,
-                                                      case_name=self._case_name)
+        return self._short_id
 
     @property
     def id(self):
@@ -115,9 +114,10 @@ class Case(object):
 
     def __stop_test(self):
         if not self.is_test_alive():
-            Utility.Alert.Error(u"没有正在执行的测试")
+            Utility.Alert.Error(msg=u"没有正在执行的测试", title=self.division_name)
             return
         self.stop_flag = True
+        Utility.Alert.Info(msg=u"正在停止中，请耐心等待。", title=self.division_name)
 
     def __start_test(self):
         if self.is_test_alive():
@@ -126,7 +126,6 @@ class Case(object):
         Utility.append_thread(self.__test_execution, thread_name=self._id)
 
     def on_stop(self, event):
-        Utility.Alert.Info(msg=u"正在停止中，请耐心等待。", title=self.division_name)
         self.__stop_test()
 
     def on_start(self, event):
