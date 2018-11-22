@@ -1,11 +1,13 @@
 Android = u"Android"
 Serial = u"Serial"
 Device = u'Device'
-CaseType = u'DeviceType'
 
-Case = u'Case'
-CaseName = u'CaseName'
-CaseType = u'CaseType'
-CaseGroup = u'CaseGroup'
+Case = u'_Case'
+CaseName = u'_CaseName'
+CaseType = u'_CaseType'
+CaseGroup = u'_CaseGroup'
+CaseLoop = u'_CaseLoop'
 
-Loop = u'Loop'
+Pass = 'Pass'
+Fail = 'Fail'
+Error = 'Error'

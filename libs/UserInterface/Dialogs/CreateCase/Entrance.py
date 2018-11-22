@@ -4,6 +4,7 @@ import logging
 from _1_CaseType import CaseType
 from _2_CaseGroupSelection import CaseGroupSelection
 from _3_CaseSelection import CaseSelection
+from _4_Loop import LoopSelection
 import ConfigPanels
 
 logger = logging.getLogger(__name__)
@@ -27,6 +28,7 @@ class Entrance(wx.Dialog):
         self.add_page(CaseType(self))
         self.add_page(CaseGroupSelection(self))
         self.add_page(CaseSelection(self))
+        self.add_page(LoopSelection(self))
         self.Bind(wx.EVT_CLOSE, self.on_cancel)
 
     def __init_btn_sizer(self):
@@ -81,8 +83,8 @@ class Entrance(wx.Dialog):
             self.add_page(config_panel(self))
 
     def remove_config_pages(self):
-        if len(self.pages) > 3:
-            return self.pages[:3]
+        if len(self.pages) > 4:
+            return self.pages[:4]
         return self.pages
 
     def update_test_case(self):

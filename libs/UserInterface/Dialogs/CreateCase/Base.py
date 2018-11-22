@@ -54,6 +54,8 @@ class ListSettingPage(SettingPage):
         items = self.get_choices()
         self.wx_list.SetItems(items)
         self.wx_list.Enable()
+        if len(items) == 1:
+            self.wx_list.SetSelection(0)
 
     def get_choices(self):
         raise NotImplementedError

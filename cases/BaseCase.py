@@ -1,6 +1,7 @@
 import inspect
 import logging
 from libs.Utility.TestPrint import TestPrint
+from libs.Config import String
 
 logger = logging.getLogger(__name__)
 
@@ -8,19 +9,20 @@ logger = logging.getLogger(__name__)
 class Case(object):
     name = None
 
-    def __init__(self, loop):
+    def __init__(self):
         self.Print = TestPrint()
-        self._pass = 0
-        self._fail = 0
-        self._total = 0
-        self._stop_flag = False
-        self._pause_flag = False
+        self.Pass = String.Pass
+        self.Fail = String.Fail
+        self.Error = String.Error
 
-    def tearDown(self):
-        self.Print.info('sss')
+    def teardown(self):
+        self.Print.info('Teardown')
 
-    def setUp(self):
-        self.Print.info('dddd')
+    def setup(self):
+        self.Print.info('Setup')
+
+    def test(self):
+        raise NotImplementedError
 
     @classmethod
     def get_configs(cls):
@@ -42,23 +44,26 @@ class Case(object):
         return tuple(args_value)
 
     def run(self):
-        NotImplementedError
-
-    def stop(self):
-        self.stop_flag = True
-
-    def pause(self):
-        self.pause_flag = not self.pause_flag
+        result = String.Error
+        try:
+            self.setup()
+            result = self.test()
+            self.teardown()
+        except Exception:
+            self.Print.traceback()
+            result = self.Error
+        finally:
+            return result
 
 
 class AndroidCase(Case):
-    def __init__(self, loop):
-        Case.__init__(self, loop=loop)
+    def __init__(self):
+        Case.__init__(self)
 
 
 class SerialCase(Case):
-    def __init__(self, loop):
-        Case.__init__(self, loop=loop)
+    def __init__(self):
+        Case.__init__(self)
 
 
 if __name__ == '__main__':

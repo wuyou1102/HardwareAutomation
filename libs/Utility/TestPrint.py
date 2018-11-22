@@ -25,11 +25,10 @@ class TestPrint(object):
     def __write(self, msg):
         if self.__log_path:
             with open(self.__log_path, 'a', 1) as log:
-                log.write(msg)
+                log.write(msg + '\n')
 
     def __format_msg(self, msg):
-        msg = msg.strip('\r\n')
-        return msg + '\n'
+        return msg.strip('\r\n')
 
     def info(self, msg):
         msg = "{timestamp}  {level}: {msg}".format(timestamp=get_timestamp(), level="INFO",

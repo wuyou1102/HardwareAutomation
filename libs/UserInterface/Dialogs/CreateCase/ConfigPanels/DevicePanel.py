@@ -7,7 +7,7 @@ from libs.Config import String
 
 class DeviceSelection(Base.ListSettingPage):
     def __init__(self, parent):
-        Base.ListSettingPage.__init__(self, parent=parent, attr_name=String.Device, title=u"请选择设备")
+        Base.ListSettingPage.__init__(self, parent=parent, attr_name='device', title=u"请选择设备")
 
     def get_choices(self):
         _type = self._get_value(String.CaseType)

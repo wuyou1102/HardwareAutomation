@@ -27,7 +27,7 @@ def execute_command(command):
     __logger.info('* EXECUTED COMMAND:\"%s\"' % command)
     try:
         for line in iter(p.stdout.readline, b''):
-            line = line.strip('\r\ns')
+            line = line.strip('\r\n')
             __logger.info("* STDOUT: {line}".format(line=line))
             outputs.append(line)
     finally:

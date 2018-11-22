@@ -1,2 +1,2 @@
-import adb
-import fastboot
+import adb as adb
+import fastboot as fastboot

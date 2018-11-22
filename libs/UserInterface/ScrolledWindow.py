@@ -1,6 +1,6 @@
 import wx
 from CaseDivision import Case
-import time
+from libs import Utility
 import logging
 
 logger = logging.getLogger(__name__)
@@ -14,7 +14,7 @@ class ScrolledWindow(wx.ScrolledWindow):
         self._test_pool = dict()
 
     def add_test_division(self, test_case):
-        _id = time.time()
+        _id = Utility.Random.code(32)
         case = Case(parent=self, _id=_id, **test_case)
         self._test_pool[_id] = case
         self._add(case.get_division())
@@ -27,6 +27,9 @@ class ScrolledWindow(wx.ScrolledWindow):
             self._refresh()
         else:
             logger.error("Can not find division id:%s" % _id)
+
+    def refresh(self):
+        self._refresh()
 
     def _refresh(self):
         self.SetSizer(self._container, deleteOld=True)
