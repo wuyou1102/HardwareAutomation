@@ -11,7 +11,7 @@ class Case(object):
         self._id = _id
         self._short_id = _id[-6:].upper()
         self._panel = wx.Panel(parent, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL)
-        self._panel.SetBackgroundColour("#33DDFF")
+        self._panel.SetBackgroundColour("#CAFCFA")
         self._init_variable(**kwargs)
         self._init_test(**kwargs)
         self._init_division()
@@ -29,30 +29,36 @@ class Case(object):
 
     def _init_case_sizer(self):
         sizer = wx.BoxSizer(wx.HORIZONTAL)
+        div_name = wx.StaticText(self._panel, wx.ID_ANY, self.division_name, wx.DefaultPosition, wx.DefaultSize, 0)
+        case_type = wx.StaticText(self._panel, wx.ID_ANY, self._case_type, wx.DefaultPosition, wx.DefaultSize, 0)
         case_name = wx.StaticText(self._panel, wx.ID_ANY, self._case_name, wx.DefaultPosition, wx.DefaultSize, 0)
+        sizer.Add(div_name, 0, wx.ALL, 3)
+        sizer.Add(case_type, 0, wx.ALL, 3)
         sizer.Add(case_name, 0, wx.ALL, 3)
         return sizer
 
-    def _init_device_sizer(self):
-        sizer = wx.BoxSizer(wx.HORIZONTAL)
-        type = wx.StaticText(self._panel, wx.ID_ANY, self._case_type, wx.DefaultPosition, wx.DefaultSize, 0)
-        sizer.Add(type, 0, wx.ALL, 3)
-        return sizer
+
 
     def _init_result_sizer(self):
         sizer = wx.BoxSizer(wx.HORIZONTAL)
         wx_pass = wx.StaticText(self._panel, wx.ID_ANY, u"成功:", wx.DefaultPosition, wx.DefaultSize, 0)
-        wx_fail = wx.StaticText(self._panel, wx.ID_ANY, u"失败:", wx.DefaultPosition, wx.DefaultSize, 0)
-        wx_error = wx.StaticText(self._panel, wx.ID_ANY, u"异常:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.wx_pass = wx.StaticText(self._panel, wx.ID_ANY, "0", wx.DefaultPosition, wx.DefaultSize, 0)
+        wx_pass.SetForegroundColour('#58D68D')
+        self.wx_pass.SetForegroundColour('#58D68D')
+        wx_fail = wx.StaticText(self._panel, wx.ID_ANY, u"失败:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.wx_fail = wx.StaticText(self._panel, wx.ID_ANY, "0", wx.DefaultPosition, wx.DefaultSize, 0)
+        wx_fail.SetForegroundColour('#FF5733')
+        self.wx_fail.SetForegroundColour('#FF5733')
+        wx_error = wx.StaticText(self._panel, wx.ID_ANY, u"异常:", wx.DefaultPosition, wx.DefaultSize, 0)
         self.wx_error = wx.StaticText(self._panel, wx.ID_ANY, "0", wx.DefaultPosition, wx.DefaultSize, 0)
+        wx_error.SetForegroundColour('#FFC300')
+        self.wx_error.SetForegroundColour('#FFC300')
         sizer.Add(wx_pass, 0, wx.ALL, 3)
-        sizer.Add(self.wx_pass, 0, wx.ALL, 3)
+        sizer.Add(self.wx_pass, 1, wx.EXPAND | wx.ALL, 3)
         sizer.Add(wx_fail, 0, wx.ALL, 3)
-        sizer.Add(self.wx_fail, 0, wx.ALL, 3)
+        sizer.Add(self.wx_fail, 1, wx.EXPAND | wx.ALL, 3)
         sizer.Add(wx_error, 0, wx.ALL, 3)
-        sizer.Add(self.wx_error, 0, wx.ALL, 3)
+        sizer.Add(self.wx_error, 1, wx.EXPAND | wx.ALL, 3)
         return sizer
 
     def _init_operation_sizer(self):
@@ -60,10 +66,10 @@ class Case(object):
         sizer = wx.BoxSizer(wx.VERTICAL)
         row1 = wx.BoxSizer(wx.HORIZONTAL)
         row2 = wx.BoxSizer(wx.HORIZONTAL)
-        start = wx.Button(self._panel, wx.ID_ANY, u">", wx.DefaultPosition, btn_size, 0)
-        stop = wx.Button(self._panel, wx.ID_ANY, u"█", wx.DefaultPosition, btn_size, 0)
-        destroy = wx.Button(self._panel, wx.ID_ANY, u"C", wx.DefaultPosition, btn_size, 0)
-        log = wx.Button(self._panel, wx.ID_ANY, u"D", wx.DefaultPosition, btn_size, 0)
+        start = wx.Button(self._panel, wx.ID_ANY, u"SRT", wx.DefaultPosition, btn_size, 0)
+        stop = wx.Button(self._panel, wx.ID_ANY, u"STOP", wx.DefaultPosition, btn_size, 0)
+        destroy = wx.Button(self._panel, wx.ID_ANY, u"DESTROY", wx.DefaultPosition, btn_size, 0)
+        log = wx.Button(self._panel, wx.ID_ANY, u"LOG", wx.DefaultPosition, btn_size, 0)
         start.Bind(wx.EVT_BUTTON, self.on_start)
         stop.Bind(wx.EVT_BUTTON, self.on_stop)
         log.Bind(wx.EVT_BUTTON, self.on_log)
@@ -81,11 +87,9 @@ class Case(object):
         sizer = wx.BoxSizer(wx.HORIZONTAL)
         left_sizer = wx.BoxSizer(wx.VERTICAL)
         case_sizer = self._init_case_sizer()
-        device_sizer = self._init_device_sizer()
         result_sizer = self._init_result_sizer()
         right_sizer = self._init_operation_sizer()
         left_sizer.Add(case_sizer, 0, wx.EXPAND | wx.ALL, 0)
-        left_sizer.Add(device_sizer, 0, wx.EXPAND | wx.ALL, 0)
         left_sizer.Add(result_sizer, 0, wx.EXPAND | wx.ALL, 0)
         sizer.Add(left_sizer, 1, wx.EXPAND | wx.ALL, 0)
         sizer.Add(right_sizer, 0, wx.ALIGN_CENTER | wx.ALL, 0)

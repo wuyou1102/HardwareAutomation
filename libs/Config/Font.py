@@ -1,0 +1,3 @@
+import wx
+
+wx.Font

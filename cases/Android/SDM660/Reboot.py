@@ -27,7 +27,6 @@ class test_DeviceExist(BaseCase.AndroidCase):
         print self.device
 
     def test(self):
-        time.sleep(10)
         result = Utility.execute_command(Command.adb.devices())
         for line in result.outputs:
             if self.device in line:
