@@ -2,6 +2,7 @@
 import wx
 
 from libs.Config import String
+from libs.Config import Font
 from libs import Utility
 
 
@@ -29,36 +30,37 @@ class Case(object):
 
     def _init_case_sizer(self):
         sizer = wx.BoxSizer(wx.HORIZONTAL)
-        div_name = wx.StaticText(self._panel, wx.ID_ANY, self.division_name, wx.DefaultPosition, wx.DefaultSize, 0)
-        case_type = wx.StaticText(self._panel, wx.ID_ANY, self._case_type, wx.DefaultPosition, wx.DefaultSize, 0)
-        case_name = wx.StaticText(self._panel, wx.ID_ANY, self._case_name, wx.DefaultPosition, wx.DefaultSize, 0)
+        div_name = wx.StaticText(self._panel, wx.ID_ANY, "[%s]" % self.division_name, wx.DefaultPosition,
+                                 wx.DefaultSize, wx.TEXT_ALIGNMENT_LEFT)
+        case_name = wx.StaticText(self._panel, wx.ID_ANY, self._case_name, wx.DefaultPosition, wx.DefaultSize,
+                                  wx.TEXT_ALIGNMENT_LEFT)
+        div_name.SetFont(wx.Font(13, wx.MODERN, wx.NORMAL, wx.BOLD))
+        case_name.SetFont(Font.COMMON_1_BOLD)
+        div_name.SetForegroundColour('#4586F3')
         sizer.Add(div_name, 0, wx.ALL, 3)
-        sizer.Add(case_type, 0, wx.ALL, 3)
-        sizer.Add(case_name, 0, wx.ALL, 3)
+        sizer.Add(case_name, 0, wx.ALIGN_BOTTOM | wx.ALL, 3)
         return sizer
 
-
-
     def _init_result_sizer(self):
+        def init_static_text(name, color):
+            tmp_sizer = wx.BoxSizer(wx.HORIZONTAL)
+            title = wx.StaticText(self._panel, wx.ID_ANY, u"%s:" % name, wx.DefaultPosition, wx.DefaultSize, 0)
+            value = wx.StaticText(self._panel, wx.ID_ANY, "0", wx.DefaultPosition, wx.DefaultSize, 0)
+            title.SetForegroundColour(color)
+            value.SetForegroundColour(color)
+            title.SetFont(Font.COMMON_1_BOLD)
+            value.SetFont(Font.COMMON_1)
+            tmp_sizer.Add(title, 0, wx.ALL, 3)
+            tmp_sizer.Add(value, 1, wx.EXPAND | wx.ALL, 3)
+            return tmp_sizer, value
+
         sizer = wx.BoxSizer(wx.HORIZONTAL)
-        wx_pass = wx.StaticText(self._panel, wx.ID_ANY, u"成功:", wx.DefaultPosition, wx.DefaultSize, 0)
-        self.wx_pass = wx.StaticText(self._panel, wx.ID_ANY, "0", wx.DefaultPosition, wx.DefaultSize, 0)
-        wx_pass.SetForegroundColour('#58D68D')
-        self.wx_pass.SetForegroundColour('#58D68D')
-        wx_fail = wx.StaticText(self._panel, wx.ID_ANY, u"失败:", wx.DefaultPosition, wx.DefaultSize, 0)
-        self.wx_fail = wx.StaticText(self._panel, wx.ID_ANY, "0", wx.DefaultPosition, wx.DefaultSize, 0)
-        wx_fail.SetForegroundColour('#FF5733')
-        self.wx_fail.SetForegroundColour('#FF5733')
-        wx_error = wx.StaticText(self._panel, wx.ID_ANY, u"异常:", wx.DefaultPosition, wx.DefaultSize, 0)
-        self.wx_error = wx.StaticText(self._panel, wx.ID_ANY, "0", wx.DefaultPosition, wx.DefaultSize, 0)
-        wx_error.SetForegroundColour('#FFC300')
-        self.wx_error.SetForegroundColour('#FFC300')
-        sizer.Add(wx_pass, 0, wx.ALL, 3)
-        sizer.Add(self.wx_pass, 1, wx.EXPAND | wx.ALL, 3)
-        sizer.Add(wx_fail, 0, wx.ALL, 3)
-        sizer.Add(self.wx_fail, 1, wx.EXPAND | wx.ALL, 3)
-        sizer.Add(wx_error, 0, wx.ALL, 3)
-        sizer.Add(self.wx_error, 1, wx.EXPAND | wx.ALL, 3)
+        pass_sizer, self.wx_pass = init_static_text(name="成功", color='#35AA53')
+        fail_sizer, self.wx_fail = init_static_text(name="失败", color='#EB4334')
+        error_sizer, self.wx_error = init_static_text(name="异常", color='#FBBD06')
+        sizer.Add(pass_sizer, 1, wx.EXPAND | wx.ALL, 0)
+        sizer.Add(fail_sizer, 1, wx.EXPAND | wx.ALL, 0)
+        sizer.Add(error_sizer, 1, wx.EXPAND | wx.ALL, 0)
         return sizer
 
     def _init_operation_sizer(self):
@@ -125,7 +127,7 @@ class Case(object):
 
     def __start_test(self):
         if self.is_test_alive():
-            Utility.Alert.Error(u"测试正在执行中")
+            Utility.Alert.Error(msg=u"测试正在执行中。", title=self.division_name)
             return
         Utility.append_thread(self.__test_execution, thread_name=self._id)
 
@@ -177,6 +179,10 @@ class ResultData(object):
         self._fail = 0
         self._error = 0
         self._total = 0
+        self.update_fail()
+        self.update_pass()
+        self.update_error()
+        self.update_total()
         self.__switch = {
             String.Fail: self.__fail,
             String.Pass: self.__pass,
@@ -203,16 +209,41 @@ class ResultData(object):
         return self._total
 
     def __pass(self):
-        self._pass += 1
-        self._total += 1
-        self.wx_pass.SetLabel(str(self._pass))
+        self.increase_pass()
+        self.increase_total()
 
     def __fail(self):
-        self._fail += 1
-        self._total += 1
-        self.wx_fail.SetLabel(str(self._fail))
+        self.increase_fail()
+        self.increase_total()
 
     def __error(self):
+        self.increase_error()
+        self.increase_total()
+
+    def increase_pass(self):
+        self._pass += 1
+        self.update_pass()
+
+    def increase_fail(self):
+        self._fail += 1
+        self.update_fail()
+
+    def increase_error(self):
         self._error += 1
+        self.update_error()
+
+    def increase_total(self):
         self._total += 1
+        self.update_total()
+
+    def update_pass(self):
+        self.wx_pass.SetLabel(str(self._pass))
+
+    def update_fail(self):
+        self.wx_fail.SetLabel(str(self._fail))
+
+    def update_error(self):
         self.wx_error.SetLabel(str(self._error))
+
+    def update_total(self):
+        pass

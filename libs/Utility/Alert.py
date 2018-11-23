@@ -6,7 +6,7 @@ logger = logging.getLogger(__name__)
 
 
 def Info(msg, title=None):
-    title = u"消息" if title is None else u"来自%s的消息" % title
+    title = u"消息" if title is None else u"来自 \"%s\" 的消息" % title
     logger.info('{title}:{msg}'.format(title=title, msg=msg))
     dialog = wx.MessageDialog(None, msg, title, wx.OK | wx.ICON_INFORMATION)
     dialog.ShowModal()
@@ -15,7 +15,7 @@ def Info(msg, title=None):
 
 
 def Warn(msg, title=None):
-    title = u"警告" if title is None else u"来自%s的警告" % title
+    title = u"警告" if title is None else u"来自 \"%s\" 的警告" % title
     logger.warn('{title}:{msg}'.format(title=title, msg=msg))
     dialog = wx.MessageDialog(None, msg, title, wx.OK | wx.ICON_WARNING)
     dialog.ShowModal()
@@ -24,7 +24,7 @@ def Warn(msg, title=None):
 
 
 def Error(msg, title=None):
-    title = u"错误" if title is None else u"来自%s的错误" % title
+    title = u"错误" if title is None else u"来自 \"%s\" 的错误" % title
     logger.error('{title}:{msg}'.format(title=title, msg=msg))
     dialog = wx.MessageDialog(None, msg, title, wx.OK | wx.ICON_ERROR)
     dialog.ShowModal()

@@ -13,8 +13,10 @@ class test_LogicalDisplays(BaseCase.AndroidCase):
         self.device = device
 
     def test(self):
+        self.Print.info("执行重启")
         Utility.execute_command(Command.adb.reboot(serial=self.device))
         Utility.execute_command(Command.adb.wait_for_device(serial=self.device))
+        self.Print.info("重启完成")
         return self.Pass
 
 
