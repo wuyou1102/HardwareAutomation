@@ -2,7 +2,6 @@
 from cases import BaseCase
 from libs import Utility
 from libs import Command
-import time
 
 
 class test_LogicalDisplays(BaseCase.AndroidCase):
@@ -12,12 +11,23 @@ class test_LogicalDisplays(BaseCase.AndroidCase):
         BaseCase.AndroidCase.__init__(self)
         self.device = device
 
-    def test(self):
-        self.Print.info("执行重启")
+    def Test(self):
+        self.Print.info(u"重启设备:%s,并等待设备重启完成" % self.device)
         Utility.execute_command(Command.adb.reboot(serial=self.device))
         Utility.execute_command(Command.adb.wait_for_device(serial=self.device))
-        self.Print.info("重启完成")
-        return self.Pass
+        self.Print.info(u"设备已启动,继续等待4秒后检查")
+        self.sleep(3)
+        for x in range(20):
+            self.sleep(1)
+            self.Print.info(u"执行第%s次检查" % (x + 1))
+            result = Utility.execute_command(
+                Command.adb.shell_command(cmd='dumpsys display | grep \\\"Logical Displays: size=\\\"',
+                                          serial=self.device))
+            self.Print.info(u"获得输出: \"%s\"" % result.outputs)
+            for output in result.outputs:
+                if "Logical Displays: size=2" in output:
+                    return self.Pass
+        return self.Fail
 
 
 class test_DeviceExist(BaseCase.AndroidCase):
@@ -26,9 +36,8 @@ class test_DeviceExist(BaseCase.AndroidCase):
     def __init__(self, device):
         BaseCase.AndroidCase.__init__(self)
         self.device = device
-        print self.device
 
-    def test(self):
+    def Test(self):
         result = Utility.execute_command(Command.adb.devices())
         for line in result.outputs:
             if self.device in line:

@@ -15,8 +15,10 @@ class TestPrint(object):
     def __init__(self):
         self.__redirect = ''
         self.__log_path = ''
+        self.__logs = list()
 
     def __print(self, msg):
+        self.__logs.append(msg)
         if self.__redirect:
             self.__redirect(msg)
         else:
@@ -51,7 +53,7 @@ class TestPrint(object):
     def debug(self, msg):
         msg = "{timestamp} {level}: {msg}".format(timestamp=get_timestamp(), level="DEBUG",
                                                   msg=self.__format_msg(msg=msg))
-        self.__print(msg)
+        # self.__print(msg)
         self.__write(msg)
 
     def result(self, msg):
@@ -61,12 +63,16 @@ class TestPrint(object):
         self.__write(msg)
 
     def traceback(self):
+        self.error('Exception')
         tmp = traceback.format_exc()
         if tmp != 'None\n':
             self.error(tmp.strip('\n'))
 
     def set_redirect(self, redirect):
         self.__redirect = redirect
+        if redirect is not None:
+            for line in self.__logs:
+                self.__redirect(line)
 
     def set_log_path(self, path):
         self.__log_path = path

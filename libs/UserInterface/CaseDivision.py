@@ -4,6 +4,7 @@ import wx
 from libs.Config import String
 from libs.Config import Font
 from libs import Utility
+from libs.UserInterface.Dialogs import TestLog
 
 
 class Case(object):
@@ -141,7 +142,15 @@ class Case(object):
         return Utility.is_alive(self._id)
 
     def on_log(self, event):
-        pass
+        self.create_log_dialog()
+
+    def create_log_dialog(self):
+        dlg = TestLog.Dialog(title=self.division_name)
+        dlg.Show()
+        self._case.set_redirect(dlg.output)
+
+    def destroy_log_dialog(self):
+        self._case.clear_redirect()
 
     def __test_execution(self):
         self.stop_flag = False

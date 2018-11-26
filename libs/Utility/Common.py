@@ -23,17 +23,18 @@ class ExecuteResult(object):
 def execute_command(command):
     outputs = list()
     p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE, shell=True)
-    __logger.info('********************************************************')
-    __logger.info('* EXECUTED COMMAND:\"%s\"' % command)
+    __logger.debug('********************************************************')
+    __logger.debug('* EXECUTED COMMAND:\"%s\"' % command)
     try:
         for line in iter(p.stdout.readline, b''):
             line = line.strip('\r\n')
-            __logger.info("* STDOUT: {line}".format(line=line))
+            __logger.debug("* STDOUT: {line}".format(line=line))
             outputs.append(line)
     finally:
         exit_code = p.wait()
-        __logger.info('* EXIT CODE: \"%s\"' % exit_code)
-        __logger.info('********************************************************')
+        p.kill()
+        __logger.debug('* EXIT CODE: \"%s\"' % exit_code)
+        __logger.debug('********************************************************')
         return ExecuteResult(exit_code=exit_code, outputs=outputs)
 
 
@@ -47,4 +48,6 @@ def get_adb_devices():
 
 
 if __name__ == '__main__':
-    print get_adb_devices()
+    res = execute_command(Command.adb.shell_command('ps |grep \"ddd\"'))
+    print res.outputs
+    print res.exit_code

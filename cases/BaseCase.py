@@ -1,7 +1,9 @@
+# -*- encoding:UTF-8 -*-
 import inspect
 import logging
 from libs.Utility.TestPrint import TestPrint
 from libs.Config import String
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -11,17 +13,15 @@ class Case(object):
 
     def __init__(self):
         self.Print = TestPrint()
-        self.Pass = String.Pass
-        self.Fail = String.Fail
-        self.Error = String.Error
+        self.__count = 0
 
-    def teardown(self):
-        self.Print.info('Teardown')
+    def BeforeTest(self):
+        self.Print.debug('Before Test.')
 
-    def setup(self):
-        self.Print.info('Setup')
+    def AfterTest(self):
+        self.Print.debug('After Test.')
 
-    def test(self):
+    def Test(self):
         raise NotImplementedError
 
     @classmethod
@@ -43,17 +43,42 @@ class Case(object):
                 args_value.append(kwargs.get(arg_name))
         return tuple(args_value)
 
+    @staticmethod
+    def sleep(secs):
+        time.sleep(secs)
+
     def run(self):
-        result = String.Error
+        self.__count += 1
         try:
-            self.setup()
-            result = self.test()
-            self.teardown()
+            self.BeforeTest()
+            result = self.Test()
+            self.AfterTest()
         except Exception:
             self.Print.traceback()
-            result = self.Error
+            return self.Error
         finally:
             return result
+
+    def set_redirect(self, redirect):
+        self.Print.set_redirect(redirect=redirect)
+
+    def clear_redirect(self):
+        self.Print.set_redirect(redirect=None)
+
+    @property
+    def Pass(self):
+        self.Print.info(u"测试结果：Pass")
+        return String.Pass
+
+    @property
+    def Fail(self):
+        self.Print.info(u"测试结果：Fail")
+        return String.Fail
+
+    @property
+    def Error(self):
+        self.Print.error(u"测试结果：Error")
+        return String.Error
 
 
 class AndroidCase(Case):
