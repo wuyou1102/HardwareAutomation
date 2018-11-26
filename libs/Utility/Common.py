@@ -49,8 +49,22 @@ def get_adb_devices():
 
 def get_visa_resources():
     import pyvisa
-    rm = pyvisa.ResourceManager()
-    return rm.list_resources()
+    resource_manager = pyvisa.ResourceManager()
+    return resource_manager.list_resources()
+
+
+def get_serial_ports():
+    import serial.tools.list_ports
+    ports = list()
+    port_list = serial.tools.list_ports.comports()
+    if len(port_list) == 0:
+        __logger.info(u'Can not find ports.')
+        return ports
+    else:
+        for port in list(port_list):
+            port_name = port[1]
+            ports.append(port_name)
+        return sorted(ports, reverse=True)
 
 
 if __name__ == '__main__':

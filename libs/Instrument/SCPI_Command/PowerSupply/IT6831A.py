@@ -1,49 +1,51 @@
-import Base
+from libs.Instrument.SCPI_Command import CommandBase
 
 
-class Command(Base.Command):
-    @property
-    def SYS_ERROR(self):
+class Command(CommandBase.PowerSupplyBase):
+    @staticmethod
+    def SYS_ERROR():
         return 'SYST:ERR?'
 
-    @property
-    def SYS_VERSION(self):
+    @staticmethod
+    def SYS_VERSION():
         return 'SYST:VERS?'
 
-    @property
-    def SYS_REMOTE(self):
+    @staticmethod
+    def SYS_REMOTE():
         return 'SYST:REM'
 
-    @property
-    def SYS_LOCAL(self):
+    @staticmethod
+    def SYS_LOCAL():
         return 'SYST:LOC'
 
-    @property
-    def SYS_RWLOCK(self):
+    @staticmethod
+    def SYS_RWLOCK():
         return 'SYST:RWL'
 
-    @property
-    def SYS_BEEPER(self):
+    @staticmethod
+    def SYS_BEEPER():
         return 'SYST:BEEP'
 
-    @property
-    def POWER_ON(self):
+    @staticmethod
+    def POWER_ON():
         return 'OUTP 1'
 
-    @property
-    def POWER_OFF(self):
+    @staticmethod
+    def POWER_OFF():
         return 'OUTP 0'
 
-    @property
-    def VOLTAGE(self):
+    @staticmethod
+    def VOLTAGE():
         return 'VOLT?'
 
-    def VOLTAGE_SET(self, value):
+    @staticmethod
+    def VOLTAGE_SET(value):
         return 'VOLT %s' % value
 
-    @property
-    def AMPERE(self):
+    @staticmethod
+    def AMPERE():
         return 'CURR?'
 
-    def AMPERE_SET(self, value):
+    @staticmethod
+    def AMPERE_SET(value):
         return 'CURR %s' % value

@@ -22,7 +22,8 @@ class SCPI(object):
         return session
 
     def __get_model_name(self):
-        return self.send_command('*IDN?')
+        model_info = self.send_command('*IDN?')
+        return model_info.split(',')[1]
 
     def disconnect(self):
         if self.__session:
@@ -34,7 +35,7 @@ class SCPI(object):
 
     def __write(self, cmd):
         logger.debug("SCPI|Write  :%s" % cmd)
-        return self.__session.write(cmd)
+        return self.__session.write(cmd)[1]
 
     def send_command(self, command):
         if self.__lock.acquire():
@@ -45,7 +46,6 @@ class SCPI(object):
             finally:
                 time.sleep(0.05)
                 self.__lock.release()
-
 
 
 if __name__ == '__main__':

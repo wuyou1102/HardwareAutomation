@@ -13,7 +13,7 @@ class Case(object):
 
     def __init__(self):
         self.Print = TestPrint()
-        self.__count = 0
+        self.count = 0
 
     def BeforeTest(self):
         self.Print.debug('Before Test.')
@@ -48,7 +48,7 @@ class Case(object):
         time.sleep(secs)
 
     def run(self):
-        self.__count += 1
+        self.count += 1
         try:
             self.BeforeTest()
             result = self.Test()

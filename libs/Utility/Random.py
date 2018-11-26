@@ -13,3 +13,7 @@ __printable = __digits + __letters + __punctuation + __whitespace
 
 def code(bit=32):
     return ''.join([__random.choice(__lowercase) for x in xrange(bit)])
+
+
+def integer(min, max):
+    return __random.randint(min, max)

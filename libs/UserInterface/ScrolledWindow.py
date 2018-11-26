@@ -15,7 +15,11 @@ class ScrolledWindow(wx.ScrolledWindow):
 
     def add_test_division(self, test_case):
         _id = Utility.Random.code(32)
-        case = Case(parent=self, _id=_id, **test_case)
+        try:
+            case = Case(parent=self, _id=_id, **test_case)
+        except Exception, e:
+            Utility.Alert.Error(e.message)
+            return False
         self._test_pool[_id] = case
         self._add(case.get_division())
         self._refresh()

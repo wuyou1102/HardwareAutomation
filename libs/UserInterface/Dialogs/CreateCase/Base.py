@@ -29,8 +29,8 @@ class ListSettingPage(SettingPage):
         SettingPage.__init__(self, parent=parent)
         main_sizer = wx.BoxSizer(wx.VERTICAL)
         if title:
-            wx_static_text = wx.StaticText(self, wx.ID_ANY, title, wx.DefaultPosition, wx.DefaultSize, 0)
-            main_sizer.Add(wx_static_text, 0, wx.EXPAND | wx.LEFT | wx.RIGHT, 3)
+            self.wx_static_text = wx.StaticText(self, wx.ID_ANY, title, wx.DefaultPosition, wx.DefaultSize, 0)
+            main_sizer.Add(self.wx_static_text, 0, wx.EXPAND | wx.LEFT | wx.RIGHT, 3)
         self.attr_name = attr_name
         self.wx_list = wx.ListBox(parent=self, id=wx.ID_ANY, pos=wx.DefaultPosition, size=wx.DefaultSize,
                                   choices=[], style=style)
