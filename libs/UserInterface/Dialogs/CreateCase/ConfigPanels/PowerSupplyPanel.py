@@ -6,7 +6,7 @@ from libs import Utility
 
 class InstrumentSelection(Base.ListSettingPage):
     def __init__(self, parent):
-        Base.ListSettingPage.__init__(self, parent=parent, attr_name='power_supply', title=u"请选择设备", need_refresh=True)
+        Base.ListSettingPage.__init__(self, parent=parent, attr_name='power_supply', title=u"请选择程控电源端口号", need_refresh=True)
 
     def get_choices(self):
         return Utility.get_visa_resources()
