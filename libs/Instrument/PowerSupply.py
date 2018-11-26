@@ -1,6 +1,7 @@
 # -*- encoding:UTF-8 -*-
-import pyvisa
 import logging
+from Base import SCPI
+from SCPI_Command import Switch
 
 logger = logging.getLogger(__name__)
 
@@ -37,34 +38,19 @@ def param_to_property(*props, **kwprops):
     return Wrapper
 
 
-class ExecuteResult(object):
-    def __init__(self, exit_code, outputs):
-        self._exit_code = exit_code
-        self._outputs = outputs
-
-    @property
-    def exit_code(self):
-        return self._exit_code
-
-    @property
-    def outputs(self):
-        return self._outputs
-
-
-class PowerSupply(object):
+class PowerSupply(SCPI):
     def __init__(self, port):
-        self.__port = port
-        self.__session = None
-        self.__init_session()
+        SCPI.__init__(port=port)
+        self.Command = Switch(self.model_name)
 
     @property
     def power(self):
         @param_to_property(action=["on", "off"])
         def _power(action='off'):
             if action == "on":
-                return self._send_command(cmd=output_on)
+                return self.send_command(cmd=self.Command.POWER_ON)
             else:
-                return self._send_command(cmd=output_off)
+                return self.send_command(cmd=self.Command.POWER_OFF)
 
         return _power
 
@@ -73,9 +59,9 @@ class PowerSupply(object):
         @param_to_property(action=["set", "query"])
         def _voltage(action='set', val='5'):
             if action == 'set':
-                return self._send_command(voltage_value_set % val)
+                return self.send_command(cmd=self.Command.VOLTAGE_SET(value=val))
             elif action == 'query':
-                return self._send_command(voltage_query)
+                return self.send_command(cmd=self.Command.VOLTAGE)
 
         return _voltage
 
@@ -84,9 +70,9 @@ class PowerSupply(object):
         @param_to_property(action=["set", "query"])
         def _ampere(action='set', val='2'):
             if action == 'set':
-                return self._send_command(ampere_value_set % val)
+                return self.send_command(cmd=self.Command.AMPERE_SET(value=val))
             elif action == 'query':
-                return self._send_command(ampere_query)
+                return self.send_command(cmd=self.Command.AMPERE)
 
         return _ampere
 
@@ -95,50 +81,16 @@ class PowerSupply(object):
         @param_to_property(action=["remote", "local", "version", "error", "beeper", "rwlock"])
         def _system(action='version'):
             if action == "remote":
-                return self._send_command(cmd=sys_remote)
+                return self.send_command(cmd=self.Command.SYS_REMOTE)
             elif action == "local":
-                return self._send_command(cmd=sys_local)
+                return self.send_command(cmd=self.Command.SYS_LOCAL)
             elif action == "version":
-                return self._send_command(cmd=sys_version)
+                return self.send_command(cmd=self.Command.SYS_VERSION)
             elif action == "error":
-                return self._send_command(cmd=sys_error)
+                return self.send_command(cmd=self.Command.SYS_ERROR)
             elif action == "beeper":
-                return self._send_command(cmd=sys_beeper)
+                return self.send_command(cmd=self.Command.SYS_BEEPER)
             elif action == "rwlock":
-                return self._send_command(cmd=sys_rwlock)
+                return self.send_command(cmd=self.Command.SYS_RWLOCK)
 
         return _system
-
-    def __init_session(self):
-        try:
-            rm = pyvisa.ResourceManager()
-            self.__session = rm.open_resource(self.__port)
-            self.__session.timeout = 5000
-        except pyvisa.errors.VisaIOError:
-            self.__session = None
-            logger.error('SCPI|Initialization serial instrument failure')
-
-    def _send_command(self, cmd):
-        if self.__session is None:
-            return False, 'Session has not been established'
-        if cmd.endswith('?'):
-            logger.debug("SCPI|Query:%s" % cmd)
-            exec_result = self.__query(cmd)
-        else:
-            logger.debug("SCPI|Write:%s" % cmd)
-            exec_result = self.__write(cmd)
-        error_msg = self.__query(sys_error)
-        logger.debug("SCPI|Error msg:%s" % error_msg)
-        if error_msg == '0, \"No error\"':
-            return True, exec_result
-        else:
-            return False, error_msg
-
-    def __query(self, cmd):
-        try:
-            return self.__session.query(cmd).strip('\r\n')
-        except pyvisa.errors.VisaIOError:
-            return 'ERROR'
-
-    def __write(self, cmd):
-        return self.__session.write(cmd)

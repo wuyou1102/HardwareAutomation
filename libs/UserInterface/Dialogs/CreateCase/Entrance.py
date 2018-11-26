@@ -79,7 +79,7 @@ class Entrance(wx.Dialog):
     def add_config_page(self, configs_types):
         self.pages = self.remove_config_pages()
         for c in configs_types:
-            config_panel = ConfigPanels.switch(c)
+            config_panel = ConfigPanels.Switch(c)
             self.add_page(config_panel(self))
 
     def remove_config_pages(self):

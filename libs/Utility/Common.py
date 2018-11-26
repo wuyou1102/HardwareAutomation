@@ -47,6 +47,12 @@ def get_adb_devices():
     return devices
 
 
+def get_visa_resources():
+    import pyvisa
+    rm = pyvisa.ResourceManager()
+    return rm.list_resources()
+
+
 if __name__ == '__main__':
     res = execute_command(Command.adb.shell_command('ps |grep \"ddd\"'))
     print res.outputs
