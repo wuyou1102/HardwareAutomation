@@ -1,7 +1,7 @@
 # -*- encoding:UTF-8 -*-
 import inspect
 import logging
-from libs.Utility.TestPrint import TestPrint
+from libs.Utility.Printer import TestPrint
 from libs.Config import String
 import time
 

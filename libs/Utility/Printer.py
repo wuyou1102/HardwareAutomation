@@ -53,7 +53,7 @@ class TestPrint(object):
     def debug(self, msg):
         msg = "{timestamp} {level}: {msg}".format(timestamp=get_timestamp(), level="DEBUG",
                                                   msg=self.__format_msg(msg=msg))
-        # self.__print(msg)
+        self.__print(msg)
         self.__write(msg)
 
     def result(self, msg):

@@ -2,6 +2,7 @@
 import subprocess
 import logging
 from libs import Command
+import time
 
 __logger = logging.getLogger(__name__)
 
@@ -65,6 +66,11 @@ def get_serial_ports():
             port_name = port[1]
             ports.append(port_name)
         return sorted(ports, reverse=True)
+
+
+def get_timestamp(time_fmt='%Y_%m_%d-%H_%M_%S', t=None):
+    t = t if t else time.time()
+    return time.strftime(time_fmt, time.localtime(t))
 
 
 if __name__ == '__main__':

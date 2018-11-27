@@ -4,7 +4,7 @@ import wx
 from libs.Config import String
 from libs.Config import Font
 from libs import Utility
-from libs.UserInterface.Dialogs import TestLog
+from libs.UserInterface import LogMonitor
 
 
 class Case(object):
@@ -145,7 +145,7 @@ class Case(object):
         self.create_log_dialog()
 
     def create_log_dialog(self):
-        dlg = TestLog.Dialog(title=self.division_name)
+        dlg = LogMonitor.Dialog(title=self.division_name)
         dlg.Show()
         self._case.set_redirect(dlg.output)
 
