@@ -4,7 +4,7 @@ import wx
 from libs.Config import String
 from libs.Config import Font
 from libs import Utility
-from libs.UserInterface import LogMonitor
+from libs.UserInterface.LogMonitor import LogMonitor
 
 
 class Case(object):
@@ -142,15 +142,14 @@ class Case(object):
         return Utility.is_alive(self._id)
 
     def on_log(self, event):
-        self.create_log_dialog()
+        self.show_log_monitor()
 
-    def create_log_dialog(self):
-        dlg = LogMonitor.Dialog(title=self.division_name)
-        dlg.Show()
-        self._case.set_redirect(dlg.output)
-
-    def destroy_log_dialog(self):
-        self._case.clear_redirect()
+    def show_log_monitor(self):
+        if self._case.IsShown():
+            print 'ddd'
+            self._case.Show(show=False)
+        else:
+            self._case.Show(show=True)
 
     def __test_execution(self):
         self.stop_flag = False

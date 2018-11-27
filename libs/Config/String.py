@@ -12,9 +12,10 @@ CaseLoop = u'_CaseLoop'
 Pass = u'Pass'
 Fail = u'Fail'
 Error = u'Error'
+NotTest = u'NotTest'
 
 LEVEL_INFO = u"INFO"
 LEVEL_DEBUG = u"DEBUG"
 LEVEL_WARM = u"WARM"
 LEVEL_ERROR = u"ERROR"
-LEVEL_RSLT = u"RSLT"
+LEVEL_RESULT = u"RESULT"

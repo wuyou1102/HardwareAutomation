@@ -4,32 +4,63 @@ import logging
 from libs.Config import Color
 from libs.Config import String
 from ObjectListView import ObjectListView, ColumnDefn, Filter
-import time
+from libs import Utility
 
 logger = logging.getLogger(__name__)
 
 
 class LogMonitor(wx.Frame):
-    def __init__(self, title):
-        wx.Frame.__init__(self, None, id=wx.ID_ANY, title=title, size=(600, 400))
+    def __init__(self):
+        wx.Frame.__init__(self, None, id=wx.ID_ANY, title='', size=(600, 400))
         main_sizer = wx.BoxSizer(wx.VERTICAL)
         self.list_view = ObjectListView(self, wx.ID_ANY, style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES)
         main_sizer.Add(self.list_view, 1, wx.EXPAND | wx.ALL, 1)
-        self._name = title
         self.SetSizer(main_sizer)
         self.Layout()
+        self.__set_columns()
+        self.__set_row_formatter()
+        self.__logs = list()
+        self.__tmp_logs = list()
+        self.__timer = wx.Timer(self)
+        self.Bind(wx.EVT_TIMER, self.AppendLogs, self.__timer)
+        self.__timer.Start(500)
 
-    @property
-    def name(self):
-        return self._name
+    def Show(self, show=True):
+        if show:
+            self.list_view.SetObjects(self.__logs)
+        super(wx.Frame, self).Show(show=show)
+
+    def Info(self, index, msg):
+        self.__append_log(LogData(index=index, level=String.LEVEL_INFO, msg=msg))
+
+    def Error(self, index, msg):
+        self.__append_log(LogData(index=index, level=String.LEVEL_ERROR, msg=msg))
+
+    def Result(self, index, msg):
+        self.__append_log(LogData(index=index, level=String.LEVEL_RESULT, msg=msg))
+
+    def Warm(self, index, msg):
+        self.__append_log(LogData(index=index, level=String.LEVEL_WARM, msg=msg))
+
+    def Debug(self, index, msg):
+        self.__append_log(LogData(index=index, level=String.LEVEL_DEBUG, msg=msg))
+
+    def __append_log(self, log):
+        self.__logs.append(log)
+        self.__tmp_logs.append(log)
+
+    def AppendLogs(self, event):
+        if self.__tmp_logs:
+            self.list_view.AddObjects(self.__tmp_logs)
+            self.__tmp_logs = []
 
     def __set_columns(self):
         self.list_view.SetColumns(
             [
-                ColumnDefn(title=u"No.", align="left", width=60, valueGetter='_index'),
-                ColumnDefn(title=u"Time", align="left", width=80, valueGetter='_time'),
-                ColumnDefn(title=u"Level", align="left", width=40, valueGetter='_level'),
-                ColumnDefn(title=u"Message", align="left", width=80, valueGetter='_msg'),
+                ColumnDefn(title=u"No.", align="center", width=80, valueGetter='_index'),
+                ColumnDefn(title=u"Level", align="center", width=60, valueGetter='_level'),
+                ColumnDefn(title=u"Time", align="center", width=80, valueGetter='_time'),
+                ColumnDefn(title=u"Message", align="left", width=2000, valueGetter='_msg'),
             ]
         )
 
@@ -46,16 +77,21 @@ class LogMonitor(wx.Frame):
             list_view.SetBackgroundColour(Color.Orange)
         elif item.LEVEL == String.LEVEL_ERROR:
             list_view.SetBackgroundColour(Color.LightCyan)
-        elif item.LEVEL == String.LEVEL_RSLT:
+        elif item.LEVEL == String.LEVEL_RESULT:
             list_view.SetBackgroundColour(Color.LemonChiffon)
         else:
             list_view.SetBackgroundColour(Color.White)
+
+    def Destroy(self):
+        if self.IsShown():
+            self.Show(show=False)
+        return True
 
 
 class LogData(object):
     def __init__(self, index, level, msg):
         self._index = index
-        self._time = get
+        self._time = Utility.get_timestamp()
         self._level = level
         self._msg = msg
 
@@ -63,11 +99,34 @@ class LogData(object):
     def LEVEL(self):
         return self._level
 
-
+    @property
+    def LINE(self):
+        return "<{index}>{timestamp}  {level}: {msg}\n".format(index=self._index, timestamp=self._time,
+                                                               level=self._level, msg=self._msg)
 
 
 if __name__ == '__main__':
     app = wx.App()
-    f = LogMonitor("hello world")
+    f = LogMonitor()
+    import threading
+
+    f.Info(1, 'ello')
+    f.Info(1, 'ello')
+    f.Info(1, 'ello')
+    f.Info(1, 'ello')
+    f.Info(1, 'ello')
+    f.Info(1, 'ello')
+    f.Info(1, 'ello')
+    f.Info(1, 'ello')
+    f.Info(1, 'ello')
+    f.Info(1, 'ello')
+    f.Info(1, 'ello')
+    f.Info(1, 'ello')
+    f.Info(1, 'ello')
+    f.Info(1, 'ello')
+
     f.Show()
+    t = threading.Thread(target=f.Debug, args=(1, 'eeeeee',))
+    t.start()
+    print 'd'
     app.MainLoop()

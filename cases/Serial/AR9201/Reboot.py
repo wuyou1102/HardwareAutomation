@@ -18,14 +18,14 @@ class test_RebootAfterBoot(BaseCase.SerialCase):
 
     def Test(self):
         self.power_supply.power.on()
-        self.Print.info(u"开启电源。")
+        self.Log.info(u"开启电源。")
         try:
             wait_for_boot_success(self)
             return self.Pass
         except Timeout.Timeout:
             return self.Fail
         finally:
-            self.Print.info(u"关闭电源并等待3秒")
+            self.Log.info(u"关闭电源并等待3秒")
             self.power_supply.power.off()
             self.sleep(3)
 
@@ -42,20 +42,20 @@ class test_RebootDuringBootProcess(BaseCase.SerialCase):
 
     def Test(self):
         self.power_supply.power.on()
-        self.Print.info(u"开启电源。")
+        self.Log.info(u"开启电源。")
         self.sleep(Utility.Random.integer(5, 15))
-        self.Print.info(u"关闭电源并等待3秒")
+        self.Log.info(u"关闭电源并等待3秒")
         self.power_supply.power.off()
         self.sleep(3)
         self.power_supply.power.on()
-        self.Print.info(u"重新开启电源。")
+        self.Log.info(u"重新开启电源。")
         try:
             wait_for_boot_success(self)
             return self.Pass
         except Timeout.Timeout:
             return self.Fail
         finally:
-            self.Print.info(u"关闭电源并等待3秒")
+            self.Log.info(u"关闭电源并等待3秒")
             self.power_supply.power.off()
             self.sleep(3)
 

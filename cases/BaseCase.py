@@ -1,9 +1,10 @@
 # -*- encoding:UTF-8 -*-
 import inspect
 import logging
-from libs.Utility.Printer import TestPrint
-from libs.Config import String
 import time
+import traceback
+from libs.Config import String
+from libs.UserInterface.LogMonitor import LogMonitor
 
 logger = logging.getLogger(__name__)
 
@@ -12,14 +13,15 @@ class Case(object):
     name = None
 
     def __init__(self):
-        self.Print = TestPrint()
+        self.LogMonitor = LogMonitor()
         self.count = 0
+        self.Log = Log(self)
 
     def BeforeTest(self):
-        self.Print.debug('Before Test.')
+        self.Log.debug(u'Before Test.')
 
     def AfterTest(self):
-        self.Print.debug('After Test.')
+        self.Log.debug(u'After Test.')
 
     def Test(self):
         raise NotImplementedError
@@ -49,36 +51,68 @@ class Case(object):
 
     def run(self):
         self.count += 1
+        result = String.NotTest
         try:
             self.BeforeTest()
             result = self.Test()
             self.AfterTest()
-        except Exception:
-            self.Print.traceback()
-            return self.Error
+        except Exception as e:
+            print e.message
+            self.Log.traceback()
+            result = self.Error
         finally:
             return result
 
-    def set_redirect(self, redirect):
-        self.Print.set_redirect(redirect=redirect)
-
-    def clear_redirect(self):
-        self.Print.set_redirect(redirect=None)
-
     @property
     def Pass(self):
-        self.Print.info(u"测试结果：Pass")
+        self.Log.result(u"测试结果：Pass")
         return String.Pass
 
     @property
     def Fail(self):
-        self.Print.info(u"测试结果：Fail")
+        self.Log.result(u"测试结果：Fail")
         return String.Fail
 
     @property
     def Error(self):
-        self.Print.error(u"测试结果：Error")
+        self.Log.error(u"测试结果：Error")
         return String.Error
+
+    def Show(self, show=True):
+        self.LogMonitor.Show(show=show)
+
+    def IsShown(self):
+        return self.LogMonitor.IsShown()
+
+    def SetTitle(self, title):
+        self.LogMonitor.SetTitle(title)
+
+
+class Log(object):
+    def __init__(self, parent):
+        self.LogMonitor = parent.LogMonitor
+        self.count = parent.count
+
+    def debug(self, msg):
+        self.LogMonitor.Debug(index=self.count, msg=msg)
+
+    def info(self, msg):
+        self.LogMonitor.Info(index=self.count, msg=msg)
+
+    def error(self, msg):
+        self.LogMonitor.Error(index=self.count, msg=msg)
+
+    def result(self, msg):
+        self.LogMonitor.Result(index=self.count, msg=msg)
+
+    def warm(self, msg):
+        self.LogMonitor.Warm(index=self.count, msg=msg)
+
+    def traceback(self):
+        self.LogMonitor.Error(index=self.count, msg='Exception')
+        tmp = traceback.format_exc()
+        if tmp != 'None\n':
+            self.LogMonitor.Error(index=self.count, msg=tmp.strip('\n'))
 
 
 class AndroidCase(Case):
