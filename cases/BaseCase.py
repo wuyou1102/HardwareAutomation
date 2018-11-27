@@ -87,32 +87,35 @@ class Case(object):
     def SetTitle(self, title):
         self.LogMonitor.SetTitle(title)
 
+    def get_count(self):
+        return self.count
+
 
 class Log(object):
     def __init__(self, parent):
         self.LogMonitor = parent.LogMonitor
-        self.count = parent.count
+        self.get_count = parent.get_count
 
     def debug(self, msg):
-        self.LogMonitor.Debug(index=self.count, msg=msg)
+        self.LogMonitor.Debug(index=self.get_count(), msg=msg)
 
     def info(self, msg):
-        self.LogMonitor.Info(index=self.count, msg=msg)
+        self.LogMonitor.Info(index=self.get_count(), msg=msg)
 
     def error(self, msg):
-        self.LogMonitor.Error(index=self.count, msg=msg)
+        self.LogMonitor.Error(index=self.get_count(), msg=msg)
 
     def result(self, msg):
-        self.LogMonitor.Result(index=self.count, msg=msg)
+        self.LogMonitor.Result(index=self.get_count(), msg=msg)
 
     def warm(self, msg):
-        self.LogMonitor.Warm(index=self.count, msg=msg)
+        self.LogMonitor.Warm(index=self.get_count(), msg=msg)
 
     def traceback(self):
-        self.LogMonitor.Error(index=self.count, msg='Exception')
+        self.LogMonitor.Error(index=self.get_count(), msg='Exception')
         tmp = traceback.format_exc()
         if tmp != 'None\n':
-            self.LogMonitor.Error(index=self.count, msg=tmp.strip('\n'))
+            self.LogMonitor.Error(index=self.get_count(), msg=tmp.strip('\n'))
 
 
 class AndroidCase(Case):

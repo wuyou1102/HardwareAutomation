@@ -3,7 +3,7 @@ import wx
 import logging
 from libs.Config import Color
 from libs.Config import String
-from ObjectListView import ObjectListView, ColumnDefn, Filter
+from ObjectListView import FastObjectListView, ColumnDefn, Filter
 from libs import Utility
 
 logger = logging.getLogger(__name__)
@@ -13,7 +13,7 @@ class LogMonitor(wx.Frame):
     def __init__(self):
         wx.Frame.__init__(self, None, id=wx.ID_ANY, title='', size=(600, 400))
         main_sizer = wx.BoxSizer(wx.VERTICAL)
-        self.list_view = ObjectListView(self, wx.ID_ANY, style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES)
+        self.list_view = FastObjectListView(self, wx.ID_ANY, style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES)
         main_sizer.Add(self.list_view, 1, wx.EXPAND | wx.ALL, 1)
         self.SetSizer(main_sizer)
         self.Layout()
@@ -24,11 +24,6 @@ class LogMonitor(wx.Frame):
         self.__timer = wx.Timer(self)
         self.Bind(wx.EVT_TIMER, self.AppendLogs, self.__timer)
         self.__timer.Start(500)
-
-    def Show(self, show=True):
-        if show:
-            self.list_view.SetObjects(self.__logs)
-        super(wx.Frame, self).Show(show=show)
 
     def Info(self, index, msg):
         self.__append_log(LogData(index=index, level=String.LEVEL_INFO, msg=msg))
@@ -57,10 +52,10 @@ class LogMonitor(wx.Frame):
     def __set_columns(self):
         self.list_view.SetColumns(
             [
-                ColumnDefn(title=u"No.", align="center", width=80, valueGetter='_index'),
-                ColumnDefn(title=u"Level", align="center", width=60, valueGetter='_level'),
-                ColumnDefn(title=u"Time", align="center", width=80, valueGetter='_time'),
-                ColumnDefn(title=u"Message", align="left", width=2000, valueGetter='_msg'),
+                ColumnDefn(title=u"No.", align="left", width=80, valueGetter='_index', isEditable=False),
+                ColumnDefn(title=u"Level", align="center", width=60, valueGetter='_level', isEditable=False),
+                ColumnDefn(title=u"Time", align="center", width=80, valueGetter='_time', isEditable=False),
+                ColumnDefn(title=u"Message", align="left", width=2000, valueGetter='_msg', isEditable=False),
             ]
         )
 
@@ -110,23 +105,11 @@ if __name__ == '__main__':
     f = LogMonitor()
     import threading
 
-    f.Info(1, 'ello')
-    f.Info(1, 'ello')
-    f.Info(1, 'ello')
-    f.Info(1, 'ello')
-    f.Info(1, 'ello')
-    f.Info(1, 'ello')
-    f.Info(1, 'ello')
-    f.Info(1, 'ello')
-    f.Info(1, 'ello')
-    f.Info(1, 'ello')
-    f.Info(1, 'ello')
-    f.Info(1, 'ello')
-    f.Info(1, 'ello')
-    f.Info(1, 'ello')
+    for x in range(1999):
+        f.Debug(1, 'ello')
+        f.Info(1, 'ello')
+        f.Result(1, 'ello')
+        f.Error(1, 'ello')
 
     f.Show()
-    t = threading.Thread(target=f.Debug, args=(1, 'eeeeee',))
-    t.start()
-    print 'd'
     app.MainLoop()
