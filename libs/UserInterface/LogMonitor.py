@@ -52,12 +52,28 @@ class LogMonitor(wx.Frame):
     def __set_columns(self):
         self.list_view.SetColumns(
             [
-                ColumnDefn(title=u"No.", align="left", width=80, valueGetter='_index', isEditable=False),
-                ColumnDefn(title=u"Level", align="center", width=60, valueGetter='_level', isEditable=False),
-                ColumnDefn(title=u"Time", align="center", width=80, valueGetter='_time', isEditable=False),
-                ColumnDefn(title=u"Message", align="left", width=2000, valueGetter='_msg', isEditable=False),
+                ColumnDefn(title=u"轮次", align="center", width=80, valueGetter='_index', isEditable=False),
+                ColumnDefn(title=u"时间", align="center", minimumWidth=100, valueGetter='_time', isEditable=False),
+                ColumnDefn(title=u"等级", align="center", width=60, valueGetter='_level', isEditable=False),
+                ColumnDefn(title=u"日志信息", align="left", minimumWidth=50, valueGetter='_msg', isSpaceFilling=True),
+
             ]
         )
+        # self.list_view.SetColumns(
+        #     [
+        #         ColumnDefn("Title", "left", 160, valueGetter="title", imageGetter="trackIcon", minimumWidth=40,
+        #                    maximumWidth=200),
+        #         ColumnDefn("Artist", valueGetter="artist", minimumWidth=40, maximumWidth=200,
+        #                    autoCompleteCellEditor=True),
+        #         ColumnDefn("Album", valueGetter="album", minimumWidth=50, autoCompleteCellEditor=True),
+        #         ColumnDefn("Genre", "left", 60, valueGetter="genre", autoCompleteComboBoxCellEditor=True),
+        #         ColumnDefn("Rating", "center", valueGetter="rating"),
+        #         ColumnDefn("Duration", "center", valueGetter="duration", stringConverter="%S seconds and %M minutes"),
+        #         ColumnDefn("Last Played", valueGetter="lastPlayed", stringConverter="%x %X", maximumWidth=100),
+        #         ColumnDefn("Comments", valueGetter="comments", minimumWidth=50, isSpaceFilling=True),
+        #     ]
+        # )
+        self.list_view.SetAutoLayout(True)
 
     def __set_row_formatter(self):
         self.list_view.rowFormatter = self.row_formatter
@@ -65,15 +81,15 @@ class LogMonitor(wx.Frame):
     @staticmethod
     def row_formatter(list_view, item):
         if item.LEVEL == String.LEVEL_INFO:
-            list_view.SetBackgroundColour(Color.White)
+            list_view.SetBackgroundColour(Color.LightGoldenrodYellow)
         elif item.LEVEL == String.LEVEL_DEBUG:
-            list_view.SetBackgroundColour(Color.DoderBlue)
+            list_view.SetBackgroundColour(Color.DarkGray)
         elif item.LEVEL == String.LEVEL_WARM:
-            list_view.SetBackgroundColour(Color.Orange)
+            list_view.SetBackgroundColour(Color.Coral)
         elif item.LEVEL == String.LEVEL_ERROR:
-            list_view.SetBackgroundColour(Color.LightCyan)
+            list_view.SetBackgroundColour(Color.OrangeRed)
         elif item.LEVEL == String.LEVEL_RESULT:
-            list_view.SetBackgroundColour(Color.LemonChiffon)
+            list_view.SetBackgroundColour(Color.LightCyan)
         else:
             list_view.SetBackgroundColour(Color.White)
 
@@ -86,7 +102,7 @@ class LogMonitor(wx.Frame):
 class LogData(object):
     def __init__(self, index, level, msg):
         self._index = index
-        self._time = Utility.get_timestamp()
+        self._time = Utility.get_timestamp(time_fmt='%m/%d %H:%M:%S')
         self._level = level
         self._msg = msg
 
@@ -105,11 +121,14 @@ if __name__ == '__main__':
     f = LogMonitor()
     import threading
 
-    for x in range(1999):
+    # for x in range(1999):
+    if True:
         f.Debug(1, 'ello')
         f.Info(1, 'ello')
         f.Result(1, 'ello')
         f.Error(1, 'ello')
+        f.Warm(1, 'ello')
+
 
     f.Show()
     app.MainLoop()

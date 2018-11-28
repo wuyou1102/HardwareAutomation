@@ -1,2 +1,8 @@
 # -*- encoding:UTF-8 -*-
-print '\xcf\xb5\xcd\xb3\xd5\xd2\xb2\xbb\xb5\xbd\xd6\xb8\xb6\xa8\xb5\xc4\xce\xc4\xbc\xfe\xa1\xa3'.decode('gbk')
+with open('D:\Profile\Desktop\\d.txt') as color:
+    for line in color.readlines():
+        # print line
+        lst = line.split('\t')
+        print '{color_name} = wx.Colour({color_rgb}) # {chinese_name} {HEX} '.format(color_name=lst[1],
+                                                                                     color_rgb=lst[4].strip('\r\n'),
+                                                                                     chinese_name=lst[2], HEX=lst[3])
