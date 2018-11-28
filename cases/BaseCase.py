@@ -65,17 +65,17 @@ class Case(object):
 
     @property
     def Pass(self):
-        self.Log.result(u"测试结果：Pass")
+        self.Log.result(String.Pass)
         return String.Pass
 
     @property
     def Fail(self):
-        self.Log.result(u"测试结果：Fail")
+        self.Log.result(String.Fail)
         return String.Fail
 
     @property
     def Error(self):
-        self.Log.error(u"测试结果：Error")
+        self.Log.error(String.Error)
         return String.Error
 
     def Show(self, show=True):
@@ -89,6 +89,9 @@ class Case(object):
 
     def get_count(self):
         return self.count
+
+    def Finished(self):
+        self.LogMonitor.Destroy()
 
 
 class Log(object):

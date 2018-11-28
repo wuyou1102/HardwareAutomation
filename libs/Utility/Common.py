@@ -105,6 +105,13 @@ def get_timestamp(time_fmt='%Y_%m_%d-%H_%M_%S', t=None):
     return time.strftime(time_fmt, time.localtime(t))
 
 
+def generator():
+    count = 0
+    while True:
+        count += 1
+        yield count
+
+
 if __name__ == '__main__':
     res = execute_command(Command.adb.shell_command('ps |grep \"ddd\"'))
     print res.outputs

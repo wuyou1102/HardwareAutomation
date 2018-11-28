@@ -116,8 +116,10 @@ class Case(object):
         if self.is_test_alive():
             Utility.Alert.Error(msg=u"正请先停止正在执行的测试。", title=self.division_name)
             return
+        self._case.Finished()
         self._panel.Destroy()
         self._parent.remove_test_division(self._id)
+
 
     def __stop_test(self):
         if not self.is_test_alive():
@@ -146,7 +148,6 @@ class Case(object):
 
     def show_log_monitor(self):
         if self._case.IsShown():
-            print 'ddd'
             self._case.Show(show=False)
         else:
             self._case.Show(show=True)
