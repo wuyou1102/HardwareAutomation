@@ -53,14 +53,17 @@ def param_to_property(*props, **kwprops):
     return Wrapper
 
 
-def execute_command(command):
+def execute_command(command, encoding=None):
     outputs = list()
     p = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, stdin=subprocess.PIPE, shell=True)
     __logger.debug('********************************************************')
     __logger.debug('* EXECUTED COMMAND:\"%s\"' % command)
     try:
         for line in iter(p.stdout.readline, b''):
-            line = line.strip('\r\n')
+            if encoding is None:
+                line = line.strip('\r\n')
+            else:
+                line = line.decode(encoding=encoding, errors="strict")
             __logger.debug("* STDOUT: {line}".format(line=line))
             outputs.append(line)
     finally:

@@ -19,14 +19,16 @@ class test_LogicalDisplays(BaseCase.AndroidCase):
         self.sleep(3)
         for x in range(20):
             self.sleep(1)
-            self.Log.info(u"执行第%s次检查" % (x + 1))
+            self.Log.debug(u"执行第%s次检查" % (x + 1))
             result = Utility.execute_command(
                 Command.adb.shell_command(cmd='dumpsys display | grep \\\"Logical Displays: size=\\\"',
                                           serial=self.device))
-            self.Log.info(u"获得输出: \"%s\"" % result.outputs)
+            self.Log.debug(u"获得输出: \"%s\"" % result.outputs)
             for output in result.outputs:
                 if "Logical Displays: size=2" in output:
+                    self.Log.info(u"找到输出Logical Displays: size=2")
                     return self.Pass
+        self.Log.error(u'没有找到输出Logical Displays: size=2')
         return self.Fail
 
 

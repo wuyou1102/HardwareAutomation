@@ -28,6 +28,7 @@ class Case(object):
         case_class = kwargs.get(String.Case)
         args = case_class.convert_dict_to_tuple(**kwargs)
         self._case = case_class(*args)
+        self._case.SetTitle("%s  %s" % (self.division_name, self._case_name))
 
     def _init_case_sizer(self):
         sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -119,7 +120,6 @@ class Case(object):
         self._case.Finished()
         self._panel.Destroy()
         self._parent.remove_test_division(self._id)
-
 
     def __stop_test(self):
         if not self.is_test_alive():
