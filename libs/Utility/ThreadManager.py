@@ -62,7 +62,7 @@ def __start_thread(target, thread_name, **kwargs):
     __thread_pool[thread_name] = t
     t.start()
     __log.debug(msg="%-10s|%50s" % ("STARTED", thread_name))
-    return True
+    return t
 
 
 if __name__ == '__main__':

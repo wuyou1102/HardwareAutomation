@@ -142,18 +142,3 @@ class LogData(object):
         return "<{runs}>{timestamp}  {level}: {msg}\n".format(runs=self._runs, timestamp=self._time,
                                                               level=self._level, msg=self._msg)
 
-
-if __name__ == '__main__':
-    app = wx.App()
-    f = LogMonitor()
-
-    for x in range(1, 1999):
-        # if True:
-        f.Debug(x, 'ello')
-        f.Info(x, 'ello')
-        f.Result(x, 'ello')
-        f.Error(x, 'ello')
-        f.Warm(x, 'ello')
-
-    f.Show()
-    app.MainLoop()

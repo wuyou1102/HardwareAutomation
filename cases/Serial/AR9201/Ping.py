@@ -8,11 +8,11 @@ class test_PingIpAddress(BaseCase.SerialCase):
 
     def __init__(self):
         BaseCase.SerialCase.__init__(self)
-        self.ip = "192.168.90.255"
+        self.ip = "192.168.90.1"
         self.command = 'ping %s -n 1' % self.ip
 
     def Test(self):
-        self.sleep(1)
+        # self.sleep(1)
         result = Utility.execute_command(self.command, encoding='gb2312')
         line = result.outputs[2]
         if "TTL=64" in line:

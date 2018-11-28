@@ -4,7 +4,6 @@ import wx
 from libs.Config import String
 from libs.Config import Font
 from libs import Utility
-from libs.UserInterface.LogMonitor import LogMonitor
 
 
 class Case(object):
@@ -121,6 +120,10 @@ class Case(object):
         self._panel.Destroy()
         self._parent.remove_test_division(self._id)
 
+    def Destroy(self):
+        self._case.LogMonitor.Destroy()
+        self._panel.Destroy()
+
     def __stop_test(self):
         if not self.is_test_alive():
             Utility.Alert.Error(msg=u"没有正在执行的测试", title=self.division_name)
@@ -132,7 +135,7 @@ class Case(object):
         if self.is_test_alive():
             Utility.Alert.Error(msg=u"测试正在执行中。", title=self.division_name)
             return
-        Utility.append_thread(self.__test_execution, thread_name=self._id)
+        self.thread = Utility.append_thread(self.__test_execution, thread_name=self._id)
 
     def on_stop(self, event):
         self.__stop_test()
@@ -163,8 +166,10 @@ class Case(object):
                 for x in xrange(self._loop):
                     result.Record(self.test_process())
             Utility.Alert.Info(msg=u"测试已完成。", title=self.division_name)
+            return True
         except StopIteration:
             Utility.Alert.Info(msg=u"测试已停止。", title=self.division_name)
+            return True
         finally:
             pass
 
@@ -172,11 +177,6 @@ class Case(object):
         if self.stop_flag:
             raise StopIteration
         return self._case.run()
-
-    def SetBackgroundColour(self, color_hex):
-        self._panel.SetBackgroundColour(color_hex)
-        self._panel.Layout()
-        self._parent.Layout()
 
 
 class ResultData(object):
@@ -199,7 +199,10 @@ class ResultData(object):
         }
 
     def Record(self, result):
-        self.__switch[result]()
+        try:
+            self.__switch[result]()
+        except KeyError:
+            pass
 
     @property
     def Pass(self):

@@ -51,7 +51,7 @@ class Case(object):
 
     def run(self):
         self.count += 1
-        result = String.NotTest
+        result = None
         try:
             self.BeforeTest()
             result = self.Test()

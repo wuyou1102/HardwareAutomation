@@ -18,6 +18,10 @@ class Frame(wx.Frame):
         self.Center()
         self.panel = FramePanel(self)
 
+    def Destroy(self):
+        self.panel.close()
+        return super(wx.Frame, self).Destroy()
+
 
 class FramePanel(wx.Panel):
     def __init__(self, parent):
@@ -56,3 +60,6 @@ class FramePanel(wx.Panel):
         if test_case is not None:
             logger.info('I got a new test case: %s' % test_case)
             self.scrolled_window.add_test_division(test_case=test_case)
+
+    def close(self):
+        self.scrolled_window.destroy()

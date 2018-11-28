@@ -41,3 +41,7 @@ class ScrolledWindow(wx.ScrolledWindow):
 
     def _add(self, division):
         self._container.Add(division, 0, wx.EXPAND | wx.ALL, 1)
+
+    def destroy(self):
+        for case in self._test_pool.values():
+            case.Destroy()

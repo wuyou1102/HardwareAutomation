@@ -24,10 +24,12 @@ logging.config.dictConfig({
         },
         'file': {
             'level': 'DEBUG',
-            'class': 'logging.FileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': os.path.join(__LOG, 'Debug.txt'),
             'formatter': 'verbose',
             'encoding': 'utf8',
+            'maxBytes': 1024 * 2000,
+            'backupCount': 10,
         }
     },
     'loggers': {
