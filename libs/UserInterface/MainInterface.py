@@ -14,7 +14,7 @@ sys.setdefaultencoding('utf-8')
 
 class Frame(wx.Frame):
     def __init__(self):
-        wx.Frame.__init__(self, None, id=wx.ID_ANY, title=u"硬件自动化测试", size=(400, 600))
+        wx.Frame.__init__(self, None, id=wx.ID_ANY, title=u"自动化测试", size=(400, 600))
         self.Center()
         self.panel = FramePanel(self)
 

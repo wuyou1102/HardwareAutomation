@@ -93,7 +93,7 @@ class LogMonitor(wx.Frame):
                 ColumnDefn(title=u"Runs", align="right", width=70, valueGetter='_runs'),
                 ColumnDefn(title=u"Time", align="center", width=100, valueGetter='_time'),
                 ColumnDefn(title=u"Level", align="center", width=70, valueGetter='_level'),
-                ColumnDefn(title=u"Log Message", align="left", minimumWidth=150, valueGetter='_msg',
+                ColumnDefn(title=u"Message", align="left", minimumWidth=150, valueGetter='_msg',
                            isSpaceFilling=True),
             ]
         )

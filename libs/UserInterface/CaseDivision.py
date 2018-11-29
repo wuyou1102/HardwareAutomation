@@ -65,14 +65,14 @@ class Case(object):
         return sizer
 
     def _init_operation_sizer(self):
-        btn_size = (25, 25)
+        btn_size = (50, 25)
         sizer = wx.BoxSizer(wx.VERTICAL)
         row1 = wx.BoxSizer(wx.HORIZONTAL)
         row2 = wx.BoxSizer(wx.HORIZONTAL)
-        start = wx.Button(self._panel, wx.ID_ANY, u"SRT", wx.DefaultPosition, btn_size, 0)
-        stop = wx.Button(self._panel, wx.ID_ANY, u"STOP", wx.DefaultPosition, btn_size, 0)
-        destroy = wx.Button(self._panel, wx.ID_ANY, u"DESTROY", wx.DefaultPosition, btn_size, 0)
-        log = wx.Button(self._panel, wx.ID_ANY, u"LOG", wx.DefaultPosition, btn_size, 0)
+        start = wx.Button(self._panel, wx.ID_ANY, u"Start", wx.DefaultPosition, btn_size, 0)
+        stop = wx.Button(self._panel, wx.ID_ANY, u"Stop", wx.DefaultPosition, btn_size, 0)
+        destroy = wx.Button(self._panel, wx.ID_ANY, u"Remove", wx.DefaultPosition, btn_size, 0)
+        log = wx.Button(self._panel, wx.ID_ANY, u"Log", wx.DefaultPosition, btn_size, 0)
         start.Bind(wx.EVT_BUTTON, self.on_start)
         stop.Bind(wx.EVT_BUTTON, self.on_stop)
         log.Bind(wx.EVT_BUTTON, self.on_log)
