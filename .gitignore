@@ -1,7 +1,5 @@
 *.pyc
 .idea/*
-log/*
-packages/build/*
-packages/dist/*
-packages/log
+packages/Automation_*
 *.spec
+*.log
