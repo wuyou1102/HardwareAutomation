@@ -25,7 +25,7 @@ logging.config.dictConfig({
         'file': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(__LOG, 'Debug.txt'),
+            'filename': os.path.join(__LOG, 'console.txt'),
             'formatter': 'verbose',
             'encoding': 'utf8',
             'maxBytes': 1024 * 2000,

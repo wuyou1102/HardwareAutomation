@@ -1,3 +1,7 @@
 *.pyc
 .idea/*
 log/*
+packages/build/*
+packages/dist/*
+packages/log
+*.spec

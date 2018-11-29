@@ -3,9 +3,9 @@ import os
 import sys
 import platform
 
-__adb = os.path.join(os.path.abspath(os.path.dirname(sys.argv[0])),
-                     "adb.exe") if platform.system() == "Windows" else "adb"
-__adb = 'adb'
+abs_path = os.path.abspath(os.path.dirname(sys.argv[0]))
+__adb = os.path.join(abs_path, 'resource', 'binary', 'android_sdk',
+                     'adb.exe') if platform.system() == "Windows" else "adb"
 
 
 def pull(remote, local, serial=''):

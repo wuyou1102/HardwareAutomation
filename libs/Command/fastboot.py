@@ -3,9 +3,9 @@ import os
 import sys
 import platform
 
-__fastboot = os.path.join(os.path.abspath(os.path.dirname(sys.argv[0])),
-                          "fastboot.exe") if platform.system() == "Windows" else "fastboot"
-__fastboot = 'fastboot'
+abs_path = os.path.abspath(os.path.dirname(sys.argv[0]))
+__fastboot = os.path.join(abs_path, 'resource', 'binary', 'android_sdk',
+                          'fastboot.exe') if platform.system() == "Windows" else "fastboot"
 
 
 def reboot(serial=''):
