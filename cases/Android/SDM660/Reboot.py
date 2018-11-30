@@ -50,13 +50,23 @@ class test_DeviceExist(BaseCase.AndroidCase):
 class test_AR8020_Node(BaseCase.AndroidCase):
     name = u"检查AR8020节点和UART"
 
-    def __init__(self, device):
+    def __init__(self, device, storage):
         BaseCase.AndroidCase.__init__(self)
         self.device = device
+        self.storage = storage
         Utility.execute_command(command=Command.adb.root(serial=self.device))
         self.sleep(0.5)
         Utility.execute_command(command=Command.adb.wait_for_device(serial=self.device))
         self.On_8020(on=False)
+
+    def BeforeTest(self):
+        Utility.execute_command(Command.adb.shell_command(cmd="logcat -c", serial=self.device))
+        exec_rslt = Utility.execute_command(
+            command=Command.adb.shell_command('ls /dev/ |grep artosyn_port', serial=self.device))
+        if exec_rslt.outputs:
+            self.Log.error("检查是否AR8020已经关闭： %s" % exec_rslt.outputs)
+        else:
+            self.Log.debug("检查是否AR8020已经关闭： %s" % exec_rslt.outputs)
 
     def On_8020(self, on=True):
         on = '1' if on else '0'
@@ -68,6 +78,9 @@ class test_AR8020_Node(BaseCase.AndroidCase):
         on = '1' if on else '0'
         Utility.execute_command(
             Command.adb.shell_command(cmd='setprop persist.data.uartlog.cit %s' % on, serial=self.device))
+        result = Utility.execute_command(
+            Command.adb.shell_command(cmd='getprop persist.data.uartlog.cit', serial=self.device))
+        self.Log.debug(u"检查UART CIT打开情况：%s" % result.outputs)
 
     def AssertUart(self):
         self.Log.debug(u"打开UART CIT测试，并等待2秒")
@@ -78,7 +91,10 @@ class test_AR8020_Node(BaseCase.AndroidCase):
         self.Log.debug('getprop <uartlog> ---> %s' % (exec_rslt.outputs))
         if exec_rslt.exit_code == 0 and '1' in exec_rslt.outputs:
             return True
-        self.Log.error("Uart测试失败:Except ['1'] , But was %s" % exec_rslt.outputs)
+        self.Log.error("Uart测试失败:Expect ['1'] , But was %s" % exec_rslt.outputs)
+        t = Utility.execute_command(command=Command.adb.shell_command("logcat -d", serial=self.device))
+        for line in t.outputs:
+            self.Log.info(line)
         return False
 
     def AssertNode(self):
