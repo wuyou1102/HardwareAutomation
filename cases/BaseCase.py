@@ -18,10 +18,12 @@ class Case(object):
         self.Log = Log(self)
 
     def BeforeTest(self):
-        self.Log.debug(u'Before Test.')
+        pass
+        # self.Log.debug(u'Before Test.')
 
     def AfterTest(self):
-        self.Log.debug(u'After Test.')
+        pass
+        # self.Log.debug(u'After Test.')
 
     def Test(self):
         raise NotImplementedError

@@ -141,4 +141,3 @@ class LogData(object):
     def LINE(self):
         return "<{runs}>{timestamp}  {level}: {msg}\n".format(runs=self._runs, timestamp=self._time,
                                                               level=self._level, msg=self._msg)
-

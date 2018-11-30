@@ -1,11 +1,18 @@
 # -*- encoding:UTF-8 -*-
 import os
 import sys
-import platform
+
+
+def is_debug():
+    import uuid
+    import platform
+    if platform.system() != "Windows":
+        return False
+    return uuid.UUID(int=uuid.getnode()).get_hex() != '0000000000000000000000a0c6000021'
+
 
 abs_path = os.path.abspath(os.path.dirname(sys.argv[0]))
-__adb = os.path.join(abs_path, 'resource', 'binary', 'android_sdk',
-                     'adb.exe') if platform.system() == "Windows" else "adb"
+__adb = os.path.join(abs_path, 'resource', 'binary', 'android_sdk', 'adb.exe') if is_debug() else "adb"
 
 
 def pull(remote, local, serial=''):
