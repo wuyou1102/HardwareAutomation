@@ -18,11 +18,9 @@ class Case(object):
 
     def BeforeTest(self):
         pass
-        # self.Log.debug(u'Before Test.')
 
     def AfterTest(self):
         pass
-        # self.Log.debug(u'After Test.')
 
     def Test(self):
         raise NotImplementedError
@@ -64,21 +62,6 @@ class Case(object):
         finally:
             return result
 
-    @property
-    def ResultPass(self):
-        self.LogMonitor.Result(index=self.count, msg=u"测试通过")
-        return String.Pass
-
-    @property
-    def ResultFail(self):
-        self.LogMonitor.Result(index=self.count, msg=u"测试失败")
-        return String.Fail
-
-    @property
-    def ResultError(self):
-        self.LogMonitor.Result(index=self.count, msg=u"测试异常")
-        return String.Error
-
     def Show(self, show=True):
         self.LogMonitor.Show(show=show)
 
@@ -108,6 +91,21 @@ class Case(object):
         tmp = traceback.format_exc()
         if tmp != 'None\n':
             self.LogMonitor.Error(index=self.get_count(), msg=tmp.strip('\n'))
+
+    @property
+    def ResultPass(self):
+        self.LogMonitor.Result(index=self.count, msg=u"测试成功")
+        return String.Pass
+
+    @property
+    def ResultFail(self):
+        self.LogMonitor.Result(index=self.count, msg=u"测试失败")
+        return String.Fail
+
+    @property
+    def ResultError(self):
+        self.LogMonitor.Result(index=self.count, msg=u"测试异常")
+        return String.Error
 
 
 class AndroidCase(Case):

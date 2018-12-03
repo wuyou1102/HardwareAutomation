@@ -3,6 +3,7 @@ import wx
 
 from libs.Config import String
 from libs.Config import Font
+from libs.Config import Color
 from libs import Utility
 
 
@@ -12,7 +13,7 @@ class Case(object):
         self._id = _id
         self._short_id = _id[-6:].upper()
         self._panel = wx.Panel(parent, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, wx.TAB_TRAVERSAL)
-        self._panel.SetBackgroundColour("#CAFCFA")
+        self._panel.SetBackgroundColour(Color.LightCyan)
         self._init_variable(**kwargs)
         self._init_test(**kwargs)
         self._init_division()
@@ -56,9 +57,9 @@ class Case(object):
             return tmp_sizer, value
 
         sizer = wx.BoxSizer(wx.HORIZONTAL)
-        pass_sizer, self.wx_pass = init_static_text(name="成功", color='#35AA53')
-        fail_sizer, self.wx_fail = init_static_text(name="失败", color='#EB4334')
-        error_sizer, self.wx_error = init_static_text(name="异常", color='#FBBD06')
+        pass_sizer, self.wx_pass = init_static_text(name="成功", color=Color.ForestGreen)
+        fail_sizer, self.wx_fail = init_static_text(name="失败", color=Color.FireBrick)
+        error_sizer, self.wx_error = init_static_text(name="异常", color=Color.DarkKhaki)
         sizer.Add(pass_sizer, 1, wx.EXPAND | wx.ALL, 0)
         sizer.Add(fail_sizer, 1, wx.EXPAND | wx.ALL, 0)
         sizer.Add(error_sizer, 1, wx.EXPAND | wx.ALL, 0)
