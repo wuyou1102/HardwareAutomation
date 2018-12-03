@@ -1,10 +1,12 @@
 # -*- encoding:UTF-8 -*-
-import wx
 import logging
+
+import wx
+from ObjectListView import FastObjectListView, ColumnDefn, Filter
+
+from libs import Utility
 from libs.Config import Color
 from libs.Config import String
-from ObjectListView import FastObjectListView, ColumnDefn, Filter
-from libs import Utility
 
 logger = logging.getLogger(__name__)
 
@@ -40,8 +42,10 @@ class LogMonitor(wx.Frame):
     def __init_menu_bar(self):
         menu_bar = wx.MenuBar()
         file_menu = wx.Menu()
-        self.save_log = wx.MenuItem(file_menu, wx.ID_SAVEAS, text="保存日志", kind=wx.ITEM_CHECK)
-        file_menu.Append(self.save_log)
+        self.record_log_menu = wx.MenuItem(file_menu, wx.ID_SAVEAS, text=u"记录日志", kind=wx.ITEM_CHECK)
+        save_log = wx.MenuItem(file_menu, wx.ID_SAVE, text=u"保存当前日志", kind=wx.ITEM_NORMAL)
+        file_menu.Append(self.record_log_menu)
+        file_menu.Append(save_log)
         menu_bar.Append(file_menu, '&File')
         self.Bind(wx.EVT_MENU, self.menu_handler)
         self.SetMenuBar(menu_bar)
@@ -49,10 +53,16 @@ class LogMonitor(wx.Frame):
     def menu_handler(self, event):
         id = event.GetId()
         if id == wx.ID_SAVEAS:
-            if self.save_log.IsChecked():
+            if self.record_log_menu.IsChecked():
                 self.__log_file = self.__get_log_file_path()
             else:
                 self.__log_file = None
+        elif id == wx.ID_SAVE:
+            save_path = self.__get_save_file_path()
+            if save_path is not None:
+                with open(save_path, 'w') as f:
+                    for log in self.__logs:
+                        f.write(log.LINE)
 
     def __get_log_file_path(self):
         dlg = wx.FileDialog(self, message="保存日志文件", wildcard="Text (*.txt)|*.txt|" "All files (*.*)|*.*",
@@ -62,6 +72,14 @@ class LogMonitor(wx.Frame):
             with open(p, 'w')as f:
                 pass
             return p
+        else:
+            return None
+
+    def __get_save_file_path(self):
+        dlg = wx.FileDialog(self, message="保存日志文件", wildcard="Text (*.txt)|*.txt|" "All files (*.*)|*.*",
+                            style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT)
+        if dlg.ShowModal() == wx.ID_OK:
+            return dlg.GetPath()
         else:
             return None
 
