@@ -63,7 +63,7 @@ def execute_command(command, encoding=None):
             if encoding is None:
                 line = line.strip('\r\n')
             else:
-                line = line.decode(encoding=encoding, errors="strict")
+                line = line.decode(encoding=encoding, errors="strict").strip('\r\n')
             __logger.debug("* STDOUT: {line}".format(line=line))
             outputs.append(line)
     finally:

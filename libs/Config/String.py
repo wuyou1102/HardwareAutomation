@@ -1,6 +1,7 @@
 # -*- encoding:UTF-8 -*-
 Android = u"Android"
 Serial = u"Serial"
+Tools = u"Tools"
 Device = u'Device'
 
 Case = u'_Case'

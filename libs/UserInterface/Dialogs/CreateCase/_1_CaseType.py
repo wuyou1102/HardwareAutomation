@@ -10,7 +10,7 @@ class CaseType(Base.ListSettingPage):
                                       title=u"请选择设备类型")
 
     def get_choices(self):
-        return [String.Android, String.Serial]
+        return [String.Android, String.Serial, String.Tools]
 
 
 if __name__ == "__main__":

@@ -15,7 +15,6 @@ class Case(object):
     def __init__(self):
         self.LogMonitor = LogMonitor()
         self.count = 0
-        self.Log = Log(self)
 
     def BeforeTest(self):
         pass
@@ -61,23 +60,23 @@ class Case(object):
         except Exception as e:
             print e.message
             self.Log.traceback()
-            result = self.Error
+            result = self.ResultError
         finally:
             return result
 
     @property
-    def Pass(self):
-        self.Log.result(String.Pass)
+    def ResultPass(self):
+        self.LogMonitor.Result(index=self.count, msg=u"测试通过")
         return String.Pass
 
     @property
-    def Fail(self):
-        self.Log.result(String.Fail)
+    def ResultFail(self):
+        self.LogMonitor.Result(index=self.count, msg=u"测试失败")
         return String.Fail
 
     @property
-    def Error(self):
-        self.Log.error(String.Error)
+    def ResultError(self):
+        self.LogMonitor.Result(index=self.count, msg=u"测试异常")
         return String.Error
 
     def Show(self, show=True):
@@ -89,34 +88,22 @@ class Case(object):
     def SetTitle(self, title):
         self.LogMonitor.SetTitle(title)
 
-    def get_count(self):
-        return self.count
-
     def Finished(self):
         self.LogMonitor.Destroy()
 
+    def Debug(self, msg):
+        self.LogMonitor.Debug(index=self.count, msg=msg)
 
-class Log(object):
-    def __init__(self, parent):
-        self.LogMonitor = parent.LogMonitor
-        self.get_count = parent.get_count
+    def Info(self, msg):
+        self.LogMonitor.Info(index=self.count, msg=msg)
 
-    def debug(self, msg):
-        self.LogMonitor.Debug(index=self.get_count(), msg=msg)
+    def Error(self, msg):
+        self.LogMonitor.Error(index=self.count, msg=msg)
 
-    def info(self, msg):
-        self.LogMonitor.Info(index=self.get_count(), msg=msg)
+    def Warm(self, msg):
+        self.LogMonitor.Warm(index=self.count, msg=msg)
 
-    def error(self, msg):
-        self.LogMonitor.Error(index=self.get_count(), msg=msg)
-
-    def result(self, msg):
-        self.LogMonitor.Result(index=self.get_count(), msg=msg)
-
-    def warm(self, msg):
-        self.LogMonitor.Warm(index=self.get_count(), msg=msg)
-
-    def traceback(self):
+    def Traceback(self):
         self.LogMonitor.Error(index=self.get_count(), msg='Exception')
         tmp = traceback.format_exc()
         if tmp != 'None\n':

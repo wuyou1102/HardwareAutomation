@@ -33,7 +33,6 @@ class IpAddressSetting(Base.SettingPage):
             self.wx_spin3.GetValue(),
             self.wx_spin4.GetValue(),
         )
-
         self._set_value('ip', attr_value)
 
     def Init(self):
