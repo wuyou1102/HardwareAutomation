@@ -31,7 +31,7 @@ def get_add_data_part(resources):
 def build():
     find_resource_files(os.path.join(root_path, 'resource'))
     data_part = get_add_data_part(resources=resource_files)
-    command = "pyinstaller -w -y --workpath {tmp} --distpath {out} {data} {script}".format(
+    command = "pyinstaller -w -y --icon=favicon.ico --workpath {tmp} --distpath {out} {data} {script}".format(
         tmp=os.path.join(abs_path, 'tmp'),
         out=os.path.join(abs_path, 'out'),
         data=data_part,
