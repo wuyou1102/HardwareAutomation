@@ -66,24 +66,27 @@ class Case(object):
         return sizer
 
     def _init_operation_sizer(self):
-        btn_size = (50, 25)
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        row1 = wx.BoxSizer(wx.HORIZONTAL)
-        row2 = wx.BoxSizer(wx.HORIZONTAL)
-        start = wx.Button(self._panel, wx.ID_ANY, u"Start", wx.DefaultPosition, btn_size, 0)
-        stop = wx.Button(self._panel, wx.ID_ANY, u"Stop", wx.DefaultPosition, btn_size, 0)
-        destroy = wx.Button(self._panel, wx.ID_ANY, u"Remove", wx.DefaultPosition, btn_size, 0)
-        log = wx.Button(self._panel, wx.ID_ANY, u"Log", wx.DefaultPosition, btn_size, 0)
+        btn_size = (30, 30)
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
+        pic_start = wx.Image('resource/icon/start.ico', wx.BITMAP_TYPE_ICO).ConvertToBitmap()
+        pic_stop = wx.Image('resource/icon/stop.ico', wx.BITMAP_TYPE_ICO).ConvertToBitmap()
+        pic_destroy = wx.Image('resource/icon/destroy.ico', wx.BITMAP_TYPE_ICO).ConvertToBitmap()
+        pic_log = wx.Image('resource/icon/log.ico', wx.BITMAP_TYPE_ICO).ConvertToBitmap()
+        start = wx.BitmapButton(self._panel, wx.ID_ANY, pic_start, wx.DefaultPosition, btn_size, style=0)
+        stop = wx.BitmapButton(self._panel, wx.ID_ANY, pic_stop, wx.DefaultPosition, btn_size, style=0)
+        destroy = wx.BitmapButton(self._panel, wx.ID_ANY, pic_destroy, wx.DefaultPosition, btn_size, style=0)
+        log = wx.BitmapButton(self._panel, wx.ID_ANY, pic_log, wx.DefaultPosition, btn_size, style=0)
+
         start.Bind(wx.EVT_BUTTON, self.on_start)
         stop.Bind(wx.EVT_BUTTON, self.on_stop)
-        log.Bind(wx.EVT_BUTTON, self.on_log)
         destroy.Bind(wx.EVT_BUTTON, self.on_destroy)
-        row1.Add(start, 0, wx.ALL, 1)
-        row1.Add(stop, 0, wx.ALL, 1)
-        row2.Add(destroy, 0, wx.ALL, 1)
-        row2.Add(log, 0, wx.ALL, 1)
-        sizer.Add(row1, 0, wx.ALL, 1)
-        sizer.Add(row2, 0, wx.ALL, 1)
+        log.Bind(wx.EVT_BUTTON, self.on_log)
+
+        sizer.Add(start, 0, wx.ALL, 0)
+        sizer.Add(stop, 0, wx.ALL, 0)
+        sizer.Add(destroy, 0, wx.ALL, 0)
+        sizer.Add(log, 0, wx.ALL, 0)
+
         return sizer
 
     def _init_division(self):

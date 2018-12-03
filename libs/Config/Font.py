@@ -3,8 +3,8 @@ import wx
 
 COMMON_1 = wx.Font(10, wx.SWISS, wx.NORMAL, wx.NORMAL)
 COMMON_1_BOLD = wx.Font(10, wx.SWISS, wx.NORMAL, wx.BOLD)
-COMMON_1_LARGE = wx.Font(12, wx.SWISS, wx.NORMAL, wx.NORMAL)
-COMMON_1_LARGE_BOLD = wx.Font(12, wx.SWISS, wx.NORMAL, wx.BOLD)
+COMMON_1_LARGE = wx.Font(11, wx.SWISS, wx.NORMAL, wx.NORMAL)
+COMMON_1_LARGE_BOLD = wx.Font(11, wx.SWISS, wx.NORMAL, wx.BOLD)
 COMMON_1_ITALIC_BOLD = wx.Font(10, wx.SWISS, wx.ITALIC, wx.BOLD)
 COMMON_1_SLANT_BOLD = wx.Font(10, wx.SWISS, wx.SLANT, wx.BOLD)
 
