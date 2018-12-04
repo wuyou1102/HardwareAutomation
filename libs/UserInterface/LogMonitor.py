@@ -174,9 +174,9 @@ class LogMonitor(wx.Frame):
             if item.MESSAGE == u"测试成功":
                 list_view.SetTextColour(Color.ForestGreen)
             elif item.MESSAGE == u"测试失败":
-                list_view.SetTextColour(Color.FireBrick)
+                list_view.SetTextColour(Color.Crimson)
             elif item.MESSAGE == u"测试异常":
-                list_view.SetTextColour(Color.DarkKhaki)
+                list_view.SetTextColour(Color.Gold)
             else:
                 list_view.SetTextColour(Color.Indigo)
 

@@ -37,8 +37,8 @@ class Case(object):
         case_name = wx.StaticText(self._panel, wx.ID_ANY, self._case_name, wx.DefaultPosition, wx.DefaultSize,
                                   wx.TEXT_ALIGNMENT_LEFT)
         div_name.SetFont(wx.Font(13, wx.MODERN, wx.NORMAL, wx.BOLD))
-        case_name.SetFont(Font.COMMON_1_BOLD)
-        div_name.SetForegroundColour('#4586F3')
+        case_name.SetFont(Font.COMMON_1_LARGE_BOLD)
+        div_name.SetForegroundColour(Color.RoyalBlue)
         sizer.Add(div_name, 0, wx.ALL, 3)
         sizer.Add(case_name, 0, wx.ALIGN_BOTTOM | wx.ALL, 3)
         return sizer
@@ -50,16 +50,16 @@ class Case(object):
             value = wx.StaticText(self._panel, wx.ID_ANY, "0", wx.DefaultPosition, wx.DefaultSize, 0)
             title.SetForegroundColour(color)
             value.SetForegroundColour(color)
-            title.SetFont(Font.COMMON_1_BOLD)
-            value.SetFont(Font.COMMON_1)
+            title.SetFont(Font.COMMON_1_LARGE_BOLD)
+            value.SetFont(Font.COMMON_1_LARGE)
             tmp_sizer.Add(title, 0, wx.ALL, 3)
             tmp_sizer.Add(value, 1, wx.EXPAND | wx.ALL, 3)
             return tmp_sizer, value
 
         sizer = wx.BoxSizer(wx.HORIZONTAL)
         pass_sizer, self.wx_pass = init_static_text(name="成功", color=Color.ForestGreen)
-        fail_sizer, self.wx_fail = init_static_text(name="失败", color=Color.FireBrick)
-        error_sizer, self.wx_error = init_static_text(name="异常", color=Color.DarkKhaki)
+        fail_sizer, self.wx_fail = init_static_text(name="失败", color=Color.Crimson)
+        error_sizer, self.wx_error = init_static_text(name="异常", color=Color.Gold)
         sizer.Add(pass_sizer, 1, wx.EXPAND | wx.ALL, 0)
         sizer.Add(fail_sizer, 1, wx.EXPAND | wx.ALL, 0)
         sizer.Add(error_sizer, 1, wx.EXPAND | wx.ALL, 0)
