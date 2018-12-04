@@ -457,5 +457,7 @@ grey61 = wx.Colour(156, 156, 156)  # #9C9C9C
 grey71 = wx.Colour(181, 181, 181)  # #B5B5B5
 lavender = wx.Colour(230, 230, 250)  # #E6E6FA
 
-
-GoogleBlue=
+GoogleBlue = wx.Colour(69, 134, 243)  # #4586F3
+GoogleRed = wx.Colour(235, 67, 52)  # #EB4334
+GoogleYellow = wx.Colour(251, 189, 6)  # #FBBD06
+GoogleGreen = wx.Colour(53, 170, 83)  # #35AA53

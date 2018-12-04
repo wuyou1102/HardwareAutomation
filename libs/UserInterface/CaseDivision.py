@@ -38,7 +38,7 @@ class Case(object):
                                   wx.TEXT_ALIGNMENT_LEFT)
         div_name.SetFont(wx.Font(13, wx.MODERN, wx.NORMAL, wx.BOLD))
         case_name.SetFont(Font.COMMON_1_LARGE_BOLD)
-        div_name.SetForegroundColour(Color.RoyalBlue)
+        div_name.SetForegroundColour(Color.GoogleBlue)
         sizer.Add(div_name, 0, wx.ALL, 3)
         sizer.Add(case_name, 0, wx.ALIGN_BOTTOM | wx.ALL, 3)
         return sizer
@@ -57,9 +57,9 @@ class Case(object):
             return tmp_sizer, value
 
         sizer = wx.BoxSizer(wx.HORIZONTAL)
-        pass_sizer, self.wx_pass = init_static_text(name="成功", color=Color.ForestGreen)
-        fail_sizer, self.wx_fail = init_static_text(name="失败", color=Color.Crimson)
-        error_sizer, self.wx_error = init_static_text(name="异常", color=Color.Gold)
+        pass_sizer, self.wx_pass = init_static_text(name="成功", color=Color.GoogleGreen)
+        fail_sizer, self.wx_fail = init_static_text(name="失败", color=Color.GoogleRed)
+        error_sizer, self.wx_error = init_static_text(name="异常", color=Color.GoogleYellow)
         sizer.Add(pass_sizer, 1, wx.EXPAND | wx.ALL, 0)
         sizer.Add(fail_sizer, 1, wx.EXPAND | wx.ALL, 0)
         sizer.Add(error_sizer, 1, wx.EXPAND | wx.ALL, 0)
