@@ -3,6 +3,9 @@ import serial
 import threading
 import time
 from InstrumentBase import SharedBaseInstrument
+import re
+
+port_pattern = re.compile(r'(COM\d+)')
 
 
 def generator_index():
@@ -14,10 +17,16 @@ def generator_index():
 class SW16(SharedBaseInstrument):
     @classmethod
     def create(cls, port):
-        cls.pool[port] = _Equipment(port=port)
+        port = re.findall(port_pattern, port)[0]
+        cls.pool["SW16(%s)" % port] = _Equipment(port=port)
+
+    @classmethod
+    def get_instrument(cls, name):
+        return cls.pool[name]
 
 
 class _Equipment(object):
+
     def __init__(self, port, bandrate=115200):
         self.port = serial.Serial(port=port, baudrate=bandrate, bytesize=8, parity='N', stopbits=1, timeout=2)
         self.lock = threading.Lock()
@@ -26,11 +35,11 @@ class _Equipment(object):
         self.__init_button()
         time.sleep(1)
 
-    def get_button(self, _id):
-        return self.__buttons[_id]
+    def get_button(self, name):
+        return self.__buttons[name]
 
     def get_buttons(self):
-        return self.__buttons.keys()
+        return sorted(self.__buttons.keys())
 
     def __init_button(self):
         btns = {

@@ -15,7 +15,7 @@ def Switch(_type):
     elif _type == u"SW16_device":
         from InstrSw16Panel import SW16DeviceSetting
         return SW16DeviceSetting
-    elif _type.startswith('SW16_button'):
-        from InstrSw16Panel import SW16DeviceSetting
-
+    elif _type.startswith(u'SW16_button'):
+        from InstrSw16Panel import SW16ButtonSetting
+        return SW16ButtonSetting
     return None

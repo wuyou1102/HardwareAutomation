@@ -6,8 +6,8 @@ from libs import Utility
 
 
 class StorageSetting(Base.SettingPage):
-    def __init__(self, parent):
-        Base.SettingPage.__init__(self, parent=parent)
+    def __init__(self, parent, attr_name):
+        Base.SettingPage.__init__(self, parent=parent, attr_name=attr_name)
         main_sizer = wx.BoxSizer(wx.VERTICAL)
         wx_static_text = wx.StaticText(self, wx.ID_ANY, u"请设置测试过程中产生文件的存放路径:", wx.DefaultPosition, wx.DefaultSize, 0)
         main_sizer.Add(wx_static_text, 0, wx.EXPAND | wx.LEFT | wx.RIGHT, 3)

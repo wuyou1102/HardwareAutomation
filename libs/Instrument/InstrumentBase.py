@@ -56,8 +56,8 @@ class SharedBaseInstrument(object):
         raise NotImplementedError
 
     @classmethod
-    def get_equipments(cls):
-        return cls.pool
+    def get_instruments(cls):
+        return cls.pool.keys()
 
 
 if __name__ == '__main__':

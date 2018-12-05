@@ -4,8 +4,8 @@ import wx
 
 
 class IpAddressSetting(Base.SettingPage):
-    def __init__(self, parent):
-        Base.SettingPage.__init__(self, parent=parent)
+    def __init__(self, parent, attr_name):
+        Base.SettingPage.__init__(self, parent=parent, attr_name=attr_name)
         main_sizer = wx.BoxSizer(wx.VERTICAL)
         wx_static_text = wx.StaticText(self, wx.ID_ANY, u"请设置Ip地址:", wx.DefaultPosition, wx.DefaultSize, 0)
         main_sizer.Add(wx_static_text, 0, wx.EXPAND | wx.LEFT | wx.RIGHT, 3)
@@ -33,7 +33,7 @@ class IpAddressSetting(Base.SettingPage):
             self.wx_spin3.GetValue(),
             self.wx_spin4.GetValue(),
         )
-        self._set_value('ip', attr_value)
+        self._set_value(self.attr_name, attr_value)
 
     def Init(self):
         pass
