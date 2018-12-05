@@ -4,6 +4,7 @@ from libs.Instrument.PowerSupply import PowerSupply
 from libs.Instrument.Serial import Serial
 from libs import Utility
 from libs.Utility import Timeout
+import time
 
 
 class test_RebootAfterBoot(BaseCase.SerialCase):
@@ -14,57 +15,53 @@ class test_RebootAfterBoot(BaseCase.SerialCase):
         self.power_supply = PowerSupply(port=power_supply)
         self.serial = Serial(port=device)
         self.power_supply.power.off()
-        self.power_supply.voltage.set(value=12)
+        self.power_supply.voltage.set(value=4.2)
 
     def Test(self):
+        # self.Debug(time.time())
         self.power_supply.power.on()
         self.Info(u"开启电源。")
         try:
             wait_for_boot_success(self)
+            # self.Debug(time.time())
             return self.ResultPass
         except Timeout.Timeout:
             return self.ResultFail
         finally:
-            self.Info(u"关闭电源并等待3秒")
             self.power_supply.power.off()
-            self.sleep(3)
+            self.Info(u"关闭电源。")
+            self.sleep(1)
 
 
-class test_RebootDuringBootProcess(BaseCase.SerialCase):
-    name = u"开机过程中重启"
-
-    def __init__(self, device, power_supply):
-        BaseCase.SerialCase.__init__(self)
-        self.power_supply = PowerSupply(port=power_supply)
-        self.serial = Serial(port=device)
-        self.power_supply.power.off()
-        self.power_supply.voltage.set(value=12)
-
-    def Test(self):
-        self.power_supply.power.on()
-        self.Info(u"开启电源。")
-        self.sleep(Utility.Random.integer(5, 15))
-        self.Info(u"关闭电源并等待3秒")
-        self.power_supply.power.off()
-        self.sleep(3)
-        self.power_supply.power.on()
-        self.Info(u"重新开启电源。")
-        try:
-            wait_for_boot_success(self)
-            return self.ResultPass
-        except Timeout.Timeout:
-            return self.ResultFail
-        finally:
-            self.Info(u"关闭电源并等待3秒")
-            self.power_supply.power.off()
-            self.sleep(3)
-
-
-@Timeout.timeout(40)
+@Timeout.timeout(6)
 def wait_for_boot_success(obj):
     while True:
         line = obj.serial.read_line()
         obj.Debug(repr(line))
-        if "A7 boot up successfully." in line or "A7 boot up succe[" in line:
-            obj.Info(u"AR9201已经完成开机")
+        if "CPU2: main\tmain ground function start" in line:
+            obj.Info(u"AR8020已经开机完成")
             break
+
+
+class test_RebootAfterBoot_SW16(BaseCase.SerialCase):
+    name = u"开机完成后重启_SW16"
+
+    def __init__(self, device, SW16_device, SW16_button_1, SW16_button_2):
+        BaseCase.SerialCase.__init__(self)
+        # self.power_supply = PowerSupply(port=power_supply)
+        # self.serial = Serial(port=device)
+        # self.power_supply.power.off()
+        # self.power_supply.voltage.set(value=4.2)
+
+    def Test(self):
+
+        self.power_supply.power.on()
+        self.Info(u"开启电源。")
+        try:
+            wait_for_boot_success(self)
+            return self.ResultPass
+        except Timeout.Timeout:
+            return self.ResultFail
+        finally:
+            self.power_supply.power.off()
+            self.Info(u"关闭电源。")

@@ -157,14 +157,13 @@ class LogMonitor(wx.Frame):
 
     def __set_row_formatter(self):
         self.list_view.rowFormatter = self.row_formatter
-        self.list_view
 
     @staticmethod
     def row_formatter(list_view, item):
         if item.LEVEL == String.LEVEL_INFO:
-            list_view.SetBackgroundColour(Color.LightGoldenrodYellow)
+            list_view.SetBackgroundColour(Color.LemonChiffon)
         elif item.LEVEL == String.LEVEL_DEBUG:
-            list_view.SetBackgroundColour(Color.DarkGray)
+            list_view.SetBackgroundColour(Color.DarkGrey)
         elif item.LEVEL == String.LEVEL_WARM:
             list_view.SetBackgroundColour(Color.Coral)
         elif item.LEVEL == String.LEVEL_ERROR:

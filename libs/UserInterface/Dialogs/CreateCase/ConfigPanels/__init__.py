@@ -1,18 +1,21 @@
-from DevicePanel import DeviceSelection
-from PowerSupplyPanel import InstrumentSelection
-from IpAddressPanel import IpAddressSetting
-from StoragePanel import StorageSetting
-
-__panels = {
-    u'device': DeviceSelection,
-    u'power_supply': InstrumentSelection,
-    u'ip': IpAddressSetting,
-    u'storage': StorageSetting,
-}
-
-
 def Switch(_type):
-    _type = _type.lower()
-    if _type in __panels.keys():
-        return __panels[_type]
+    print _type
+    if _type == u'device':
+        from DevicePanel import DeviceSelection
+        return DeviceSelection
+    elif _type == u'power_supply':
+        from PowerSupplyPanel import InstrumentSelection
+        return InstrumentSelection
+    elif _type == u'ip':
+        from IpAddressPanel import IpAddressSetting
+        return IpAddressSetting
+    elif _type == u'storage':
+        from StoragePanel import StorageSetting
+        return StorageSetting
+    elif _type == u"SW16_device":
+        from InstrSw16Panel import SW16DeviceSetting
+        return SW16DeviceSetting
+    elif _type.startswith('SW16_button'):
+        from InstrSw16Panel import SW16DeviceSetting
+
     return None

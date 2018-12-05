@@ -48,6 +48,18 @@ class SCPI(object):
                 self.__lock.release()
 
 
+class SharedBaseInstrument(object):
+    pool = dict()
+
+    @classmethod
+    def create(cls):
+        raise NotImplementedError
+
+    @classmethod
+    def get_equipments(cls):
+        return cls.pool
+
+
 if __name__ == '__main__':
     a = SCPI('sss')
     a.send_command('ssss')

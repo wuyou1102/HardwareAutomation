@@ -6,8 +6,8 @@ from libs.Config import String
 
 
 class DeviceSelection(Base.ListSettingPage):
-    def __init__(self, parent):
-        Base.ListSettingPage.__init__(self, parent=parent, attr_name='device')
+    def __init__(self, parent, attr_name):
+        Base.ListSettingPage.__init__(self, parent=parent, attr_name=attr_name)
         self.wx_static_text.SetLabel(self.get_title())
 
     def get_choices(self):
