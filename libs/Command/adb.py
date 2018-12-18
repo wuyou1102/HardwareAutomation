@@ -8,7 +8,7 @@ def is_debug():
     import platform
     if platform.system() != "Windows":
         return False
-    return uuid.UUID(int=uuid.getnode()).get_hex() != '0000000000000000000000a0c6000021'
+    return uuid.UUID(int=uuid.getnode()).get_hex() != '000000000000000000008cec4b410724'
 
 
 abs_path = os.path.abspath(os.path.dirname(sys.argv[0]))
