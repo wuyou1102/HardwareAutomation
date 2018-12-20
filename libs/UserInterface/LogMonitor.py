@@ -25,6 +25,7 @@ class LogMonitor(wx.Frame):
             self.panel, wx.ID_ANY,
             style=wx.LC_REPORT | wx.LC_HRULES | wx.LC_VRULES | wx.SUNKEN_BORDER | wx.LC_NO_SORT_HEADER)
         main_sizer.Add(filter_sizer, 0, wx.EXPAND | wx.ALL, 1)
+
         main_sizer.Add(self.list_view, 1, wx.EXPAND | wx.ALL, 1)
         self.panel.SetSizer(main_sizer)
         self.Layout()
@@ -48,6 +49,12 @@ class LogMonitor(wx.Frame):
         file_menu.Append(save_log)
         menu_bar.Append(file_menu, '&File')
         self.Bind(wx.EVT_MENU, self.menu_handler)
+        view_menu = wx.Menu()
+        self.auto_scroll = wx.MenuItem(file_menu, wx.ID_ANY, text=u"自动滚动", kind=wx.ITEM_CHECK)
+        view_menu.Append(self.auto_scroll)
+        menu_bar.Append(view_menu, '&View')
+        self.auto_scroll.Check()
+
         self.SetMenuBar(menu_bar)
 
     def menu_handler(self, event):
@@ -141,6 +148,8 @@ class LogMonitor(wx.Frame):
     def AppendLogs(self, event):
         if self.__tmp_logs:
             self.list_view.AddObjects(self.__tmp_logs)
+            if self.auto_scroll.IsChecked():
+                self.list_view.SelectObject(self.__tmp_logs[-1], ensureVisible=True)
             self.__tmp_logs = []
 
     def __set_columns(self):

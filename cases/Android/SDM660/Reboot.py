@@ -50,10 +50,9 @@ class test_DeviceExist(BaseCase.AndroidCase):
 class test_AR8020_Node(BaseCase.AndroidCase):
     name = u"检查AR8020节点和UART"
 
-    def __init__(self, device, storage):
+    def __init__(self, device):
         BaseCase.AndroidCase.__init__(self)
         self.device = device
-        self.storage = storage
         Utility.execute_command(command=Command.adb.root(serial=self.device))
         self.sleep(0.5)
         Utility.execute_command(command=Command.adb.wait_for_device(serial=self.device))
@@ -61,6 +60,7 @@ class test_AR8020_Node(BaseCase.AndroidCase):
 
     def BeforeTest(self):
         Utility.execute_command(Command.adb.shell_command(cmd="logcat -c", serial=self.device))
+        Utility.execute_command(Command.adb.shell_command(cmd="dmsg -c", serial=self.device))
         exec_rslt = Utility.execute_command(
             command=Command.adb.shell_command('ls /dev/ |grep artosyn_port', serial=self.device))
         if exec_rslt.outputs:
@@ -126,11 +126,16 @@ class test_AR8020_Node(BaseCase.AndroidCase):
         exec_rslt = Utility.execute_command(
             Command.adb.shell_command(cmd='getprop persist.data.uartlog', serial=self.device))
         self.Debug('重新获取getprop <uartlog> ---> %s' % (exec_rslt.outputs))
-        self.On_CIT(on=False)
-        self.On_8020(on=False)
+
         self.Debug(u"关闭AR8020 和 UART CIT")
         if node_result and uart_result:
+            self.On_CIT(on=False)
+            self.On_8020(on=False)
             return self.ResultPass
+        while True:
+            self.sleep(10)
+        self.On_CIT(on=False)
+        self.On_8020(on=False)
         return self.ResultFail
 
 
@@ -202,7 +207,7 @@ class test_AR8020_Node_For_DVT(BaseCase.AndroidCase):
 
     def Test(self):
         node_result = self.AssertNode()
-        uart_result = True #self.AssertUart()
+        uart_result = True  # self.AssertUart()
         Utility.execute_command(Command.adb.shell_command('setprop persist.data.uartlog 0', serial=self.device))
         self.Debug('重新设置setprop <uartlog> <--- 0')
         exec_rslt = Utility.execute_command(
@@ -211,7 +216,6 @@ class test_AR8020_Node_For_DVT(BaseCase.AndroidCase):
         self.On_CIT(on=False)
         self.Debug(u"关闭AR8020 和 UART CIT")
         if node_result and uart_result:
-
             self.On_8020(on=False)
             return self.ResultPass
         while True:
