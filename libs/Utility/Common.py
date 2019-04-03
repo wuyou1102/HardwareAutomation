@@ -116,6 +116,6 @@ def generator():
 
 
 if __name__ == '__main__':
-    res = execute_command(Command.adb.shell_command('ps |grep \"ddd\"'))
+    res = execute_command(Command.adb.shell_command('\"aaaa\" | grep aaa'))
     print res.outputs
     print res.exit_code

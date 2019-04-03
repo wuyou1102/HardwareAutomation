@@ -60,7 +60,7 @@ class test_AR8020_Node(BaseCase.AndroidCase):
 
     def BeforeTest(self):
         Utility.execute_command(Command.adb.shell_command(cmd="logcat -c", serial=self.device))
-        Utility.execute_command(Command.adb.shell_command(cmd="dmsg -c", serial=self.device))
+        Utility.execute_command(Command.adb.shell_command(cmd="dmesg -c", serial=self.device))
         exec_rslt = Utility.execute_command(
             command=Command.adb.shell_command('ls /dev/ |grep artosyn_port', serial=self.device))
         if exec_rslt.outputs:
@@ -120,7 +120,7 @@ class test_AR8020_Node(BaseCase.AndroidCase):
 
     def Test(self):
         node_result = self.AssertNode()
-        uart_result = self.AssertUart()
+        uart_result = True  # self.AssertUart()
         Utility.execute_command(Command.adb.shell_command('setprop persist.data.uartlog 0', serial=self.device))
         self.Debug('重新设置setprop <uartlog> <--- 0')
         exec_rslt = Utility.execute_command(
@@ -128,13 +128,10 @@ class test_AR8020_Node(BaseCase.AndroidCase):
         self.Debug('重新获取getprop <uartlog> ---> %s' % (exec_rslt.outputs))
 
         self.Debug(u"关闭AR8020 和 UART CIT")
-        if node_result and uart_result:
-            self.On_CIT(on=False)
-            self.On_8020(on=False)
-            return self.ResultPass
-
         self.On_CIT(on=False)
         self.On_8020(on=False)
+        if node_result and uart_result:
+            return self.ResultPass
         wifi = Utility.execute_command(command=Command.adb.shell_command("ifconfig", serial=self.device))
         for line in wifi.outputs:
             self.Info(line)

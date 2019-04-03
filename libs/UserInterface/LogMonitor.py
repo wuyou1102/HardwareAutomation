@@ -187,7 +187,6 @@ class LogMonitor(wx.Frame):
                 list_view.SetTextColour(Color.GoogleYellow)
             else:
                 list_view.SetTextColour(Color.GoogleBlue)
-
         else:
             list_view.SetBackgroundColour(Color.White)
 
